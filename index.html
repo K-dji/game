@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html data-page-node-id="MkcGbgRgJNXf83IRnyZ9TC" data-dm-ref="2" lang="zh-CN"><head data-page-node-id="jdqoqB2UqHG1im9Il84w60">
+<script data-page-node-id="5sDCjFWHvhyBnucneRpTlQ" src="/page/page_comm/inject.js"></script>
+<meta data-page-node-id="3Pzama5mYNGMOgRmtepo40" charset="UTF-8">
+<meta data-page-node-id="DXswGgDA5bAJ2syj3gOWuF" content="width=device-width,initial-scale=1" name="viewport">
+<title data-page-node-id="B5WUXGOy0EyD1v3kSFQFLD" data-pnid-children="phJv70ze3eC88cruMzJAqh">谁才是赢家 · 100 关</title>
+<style data-page-node-id="GUOwBsV9d2JtSXFybVWBND" data-pnid-children="pSykOyh4CadrUOkgNflGPc">
+:root{
+  --bg:#0b0d16; --bg2:#121527; --panel:#171b30; --panel2:#1e2340;
+  --line:#2a3054; --txt:#e8ecff; --dim:#8b93bd;
+  --gold:#ffd23f; --red:#ff4d6d; --green:#35e0a1; --blue:#3ba7ff; --purple:#a45cff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:radial-gradient(1200px 600px at 50% -10%,#1c2144 0%,#0b0d16 60%) fixed,var(--bg);
+  color:var(--txt);font:14px/1.5 "MiSans","HarmonyOS Sans SC","PingFang SC","Microsoft YaHei UI","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+  display:flex;justify-content:center;padding:14px;overflow-x:hidden;
+}
+#app{width:100%;max-width:1000px;display:flex;flex-direction:column;gap:12px}
+.topbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);
+  border-radius:16px;padding:10px 14px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.brand{display:flex;align-items:center;gap:10px;min-width:210px}
+.logo{font-size:26px;filter:drop-shadow(0 0 8px rgba(255,77,109,.8))}
+.brand h1{font-size:21px;letter-spacing:2px;font-family:'楷体','KaiTi','华文楷体','STKaiti','Kaiti SC','华文行楷','STXingkai','仿宋','FangSong','隶书','LiSu',cursive;
+  background:linear-gradient(120deg,#ff4d6d,#ff9d3f,#ffd23f,#35e0a1,#ff4d6d);
+  background-size:300% 300%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:heroFlow 4s linear infinite,brandGlow 2.4s ease-in-out infinite}
+@keyframes brandGlow{0%,100%{filter:drop-shadow(0 0 2px rgba(255,120,90,.35))}50%{filter:drop-shadow(0 0 7px rgba(255,150,90,.8))}}
+.brand p{font-size:11px;color:var(--dim)}
+.hud{display:flex;gap:8px;flex:1;flex-wrap:wrap}
+.hud-item{background:#0e1120;border:1px solid var(--line);border-radius:10px;padding:4px 10px;min-width:74px}
+.hud-item span{display:block;font-size:10px;color:var(--dim);letter-spacing:1px}
+.hud-item b{font-size:14px;font-variant-numeric:tabular-nums}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;color:var(--txt);background:#212749;border:1px solid var(--line);
+  border-radius:10px;padding:7px 12px;transition:.15s}
+button:hover{background:#2b3360;transform:translateY(-1px)}
+button:active{transform:translateY(0)}
+button.primary{background:linear-gradient(180deg,#ff5f7d,#d92b52);border-color:#ff8ea3;font-weight:700}
+button.gold{background:linear-gradient(180deg,#ffd75e,#e0a800);border-color:#ffe9a8;color:#2a1d00;font-weight:700}
+button:disabled{opacity:.35;cursor:not-allowed;transform:none}
+button.sm{padding:5px 9px;font-size:12.5px}
+#stage{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);
+  background:#05060c;box-shadow:0 18px 50px rgba(0,0,0,.55)}
+canvas{display:block;width:100%;height:auto;aspect-ratio:960/560;touch-action:none}
+.hint{position:absolute;left:50%;top:10px;transform:translateX(-50%);max-width:88%;
+  background:rgba(10,12,24,.82);border:1px solid var(--line);border-radius:999px;padding:6px 16px;
+  font-size:12.5px;color:#cfd6ff;text-align:center;pointer-events:none;backdrop-filter:blur(6px);
+  opacity:0;transition:opacity .3s}
+.hint.show{opacity:1}
+.cheat-dots{position:absolute;right:14px;bottom:46px;display:flex;gap:6px;opacity:0;transform:translateY(6px);
+  transition:opacity .18s,transform .18s;pointer-events:none}
+.cheat-dots.show{opacity:1;transform:translateY(0)}
+.cheat-dots i{width:11px;height:11px;border-radius:50%;background:#2b3258;border:1px solid #4a5386;display:block}
+.cheat-dots i.on{background:linear-gradient(180deg,#ffd75e,#ff9d3f);border-color:#ffe9a8;
+  box-shadow:0 0 10px rgba(255,190,60,.9)}
+.cheat-badge{position:absolute;right:10px;bottom:10px;display:none;font-size:11.5px;font-weight:700;
+  color:#2a1d00;background:linear-gradient(90deg,#ffd75e,#ff9d3f);padding:5px 12px;border-radius:999px;
+  box-shadow:0 0 18px rgba(255,190,60,.6);animation:pulse 1.2s infinite}
+.cheat-badge.on{display:block}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.62}}
+/* 训练场热键图例：常驻在画面左上角（hint 在顶部居中，不冲突）。
+   pointer-events:none —— 它盖在画布上，绝不能挡住任何点击。 */
+.train-legend{position:absolute;left:10px;top:10px;display:none;flex-direction:column;gap:3px;
+  background:rgba(10,12,24,.72);border:1px solid var(--line);border-radius:12px;padding:8px 11px;
+  font-size:11px;color:#aeb6e8;pointer-events:none;backdrop-filter:blur(6px);max-width:210px;
+  /* z-index 必须显式给：它是盖在画布上的 HUD，靠 auto 就只是「比画布晚绘制」，
+     任何后加进来的定位层（截图链路会往 body 贴一张 z-index:99998 的备用图）都能把它压住。 */
+  z-index:99999}
+.train-legend.on{display:flex}
+.train-legend>b{color:#cfd6ff;font-size:11.5px;letter-spacing:.4px;margin-bottom:2px}
+.train-legend>span{display:flex;align-items:center;gap:6px;line-height:1.35}
+.train-legend i{font-style:normal;font-weight:800;color:#0a0c18;background:#8d96d8;border-radius:5px;
+  min-width:16px;text-align:center;padding:1px 3px;font-size:10.5px}
+.train-legend em{font-style:normal;color:#c6cdf5}
+.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;background:#090b14;text-align:center;padding:22px;z-index:5;
+  overflow:auto}
+.overlay.hidden{display:none}
+.hidden{display:none!important} /* 通用显隐开关（顶栏作弊锁 / 用户管理按钮等 classList.toggle 用） */
+/* 联机大厅：蛋仔派对式浮层 —— 背后是大厅场景（角色可走动），面板只占边角 */
+#ov-lobby{background:linear-gradient(180deg,rgba(9,11,20,.88) 0%,rgba(9,11,20,.55) 30%,rgba(9,11,20,.12) 62%,rgba(9,11,20,.55) 100%);
+  pointer-events:none;justify-content:flex-end;padding-bottom:14px}
+#ov-lobby>*{pointer-events:none}
+#ov-lobby .room-wrap,#ov-lobby .row,#ov-lobby .set-tip,#ov-lobby h2{pointer-events:auto}
+#ov-lobby .room-wrap{align-items:stretch}
+/* 房主规则区（模仿我的世界）：房客整块只读置灰 */
+.set-sec.ro{opacity:.62}
+.set-sec.ro .track,.set-sec.ro select{pointer-events:none}
+.room-wrap{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;max-width:860px}
+.mode-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}
+.mode-card{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 4px;border-radius:12px;
+  border:1.5px solid rgba(255,255,255,.16);background:rgba(30,34,64,.6);color:#e8ecff;cursor:pointer;font-size:12px}
+.mode-card b{font-size:20px}
+.mode-card:hover{border-color:#ffd75e}
+.mode-card.on{border-color:#ffd75e;background:rgba(255,215,94,.14);box-shadow:0 0 12px rgba(255,215,94,.25)}
+.spec-choose{position:absolute;left:50%;bottom:64px;transform:translateX(-50%);z-index:6;
+  display:flex;gap:8px;align-items:center;background:rgba(16,38,28,.85);border:1px solid #2f8f6c;
+  border-radius:999px;padding:6px 12px;color:#a9f0d0;font-size:12px}
+.spec-choose.hidden{display:none}
+.spec-list{display:flex;gap:6px;flex-wrap:wrap}
+.spec-list button{padding:3px 10px;border-radius:999px;border:1px solid #2f8f6c;background:transparent;
+  color:#a9f0d0;font-size:11.5px;cursor:pointer}
+.spec-list button.on{background:#2f8f6c;color:#fff}
+.overlay h2{font-size:30px;letter-spacing:3px;
+  background:linear-gradient(90deg,var(--red),var(--gold),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent}
+@keyframes heroFlow{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.overlay p{color:var(--dim);font-size:13px;max-width:640px}
+.keys{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:2px}
+.key{background:#141834;border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-size:12px;color:#c8cfff}
+.key b{color:var(--gold)}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.grid-select{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;width:100%;max-width:660px;
+  max-height:46vh;overflow:auto;padding:4px}
+.lv{aspect-ratio:1;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;border:1px solid var(--line);background:#151932;cursor:pointer;position:relative}
+.lv:hover{background:#232a52}
+.lv.done{background:linear-gradient(180deg,#1d5c46,#134434);border-color:#2f8f6c;color:#7dffcb}
+.lv.cur{background:linear-gradient(180deg,#7a2038,#4d1424);border-color:#ff6b8a;color:#ffd8e0;
+  box-shadow:0 0 0 2px rgba(255,77,109,.45)}
+.lv.lock{opacity:.32;cursor:not-allowed;background:#0e1122}
+footer{color:var(--dim);font-size:11.5px;text-align:center;padding:2px 0 10px}
+footer .foot-copy{font-size:11.5px}
+footer .foot-sub{font-size:10.5px;opacity:.75;margin-top:2px}
+/* 客户端区分：Android App 内嵌 WebView 带 ?client=android，官网页脚（版权 / 下载区块）整体隐藏 */
+body.app-client footer{display:none!important}
+/* ---- 页面最底部：下载「谁才是赢家」客户端（Android / iOS / Windows） ---- */
+.foot-dl{margin-top:10px;padding-top:10px;border-top:1px solid rgba(140,160,255,.14);width:100%}
+.dl-title{font-size:13.5px;font-weight:700;color:#c9d1ff;margin-bottom:8px;letter-spacing:.5px}
+.dl-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.dl-card{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:118px;
+  padding:9px 14px 10px;border-radius:12px;background:rgba(20,24,48,.85);
+  border:1px solid var(--line);text-decoration:none;color:#c6cdf5}
+.dl-card .dl-ico{font-size:22px;line-height:1.1}
+.dl-card .dl-name{font-size:12.5px;font-weight:700;color:#dfe8ff}
+.dl-card .dl-ver{font-size:10px;opacity:.7}
+.dl-btn{margin-top:4px;font-size:11px;font-weight:700;color:#08130d;
+  padding:4px 12px;border-radius:999px;background:linear-gradient(180deg,#54e6a8,#2fae78)}
+.dl-card.dl-ok:hover{border-color:#54e6a8;box-shadow:0 0 12px rgba(84,230,168,.35)}
+.dl-card.dl-soon{opacity:.55;cursor:default}
+.dl-badge{margin-top:4px;font-size:10px;color:#ffd23f;border:1px solid rgba(255,210,63,.45);
+  padding:3px 10px;border-radius:999px;background:rgba(255,210,63,.08)}
+.stat-line{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;font-size:13px;color:#c9d1ff}
+/* ---- 至高账号 · 用户管理面板 ---- */
+.admin-body{display:flex;flex-direction:column;gap:6px;max-height:46vh;overflow-y:auto;margin:8px 0;padding:2px}
+.admin-row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  background:rgba(10,13,28,.6);border:1px solid var(--line);border-radius:10px;padding:7px 11px}
+.adm-info{display:flex;gap:7px;align-items:center;font-size:13.5px}
+.adm-tags{display:inline-flex;gap:5px;flex-wrap:wrap}
+.adm-tag{font-size:10.5px;padding:2px 7px;border-radius:999px;font-weight:700}
+.adm-sup{background:#3d2f00;color:#ffd75e;border:1px solid #8f7a1e}
+.adm-ban{background:#331111;color:#ff7a7a;border:1px solid #8f3030}
+.adm-ok{background:#0d2018;color:#7ad4a8;border:1px solid #2f8f6c}
+.adm-acts{display:flex;gap:6px;flex-wrap:wrap}
+.adm-acts .sm.danger{color:#ff9a9a;border-color:#8f3030}
+.stat-line b{color:var(--gold)}
+/* ---- 联机模式 ---- */
+.net-panel{width:100%;max-width:640px;display:flex;flex-direction:column;gap:10px;text-align:left;
+  background:#10142a;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.net-panel.hidden{display:none}
+.net-role{font-size:13px;font-weight:800;letter-spacing:1px}
+.net-row{display:flex;gap:8px;align-items:flex-start}
+.net-row .set-label{min-width:96px;padding-top:8px}
+.net-code{flex:1;min-height:64px;max-height:110px;resize:vertical;
+  background:#0b0e1c;border:1px solid var(--line);border-radius:8px;color:#c8cfff;
+  font:11.5px/1.45 ui-monospace,Consolas,"Courier New",monospace;padding:7px 9px;word-break:break-all}
+.net-code:focus{outline:none;border-color:#4a5386}
+.net-select{background:#161b36;border:1px solid var(--line);border-radius:8px;color:#c8cfff;
+  font:inherit;font-size:12.5px;padding:6px 9px}
+.net-tag{position:absolute;right:12px;top:12px;display:none;font-size:11.5px;font-weight:700;
+  background:rgba(10,12,24,.82);border:1px solid var(--line);border-radius:999px;padding:5px 13px;
+  color:#9fe8ff;backdrop-filter:blur(6px);z-index:99998}
+.net-tag.on{display:block}
+
+/* ---- 主页主菜单 ---- */
+.menu-btns{display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;margin-top:4px}
+.menu-btns button{padding:12px 18px;font-size:15px;border-radius:12px}
+.sec-title{font-size:11.5px;letter-spacing:2.5px;color:var(--gold);font-weight:700;text-transform:uppercase;
+  align-self:flex-start;padding-top:2px}
+/* ---- 设置面板 ---- */
+.set-body{width:100%;max-width:100%;display:flex;flex-direction:column;gap:12px;text-align:left;
+  max-height:56vh;overflow:auto;padding:2px 6px 2px 2px}
+.set-sec{border:1px solid var(--line);border-radius:12px;background:#10142a;padding:10px 12px;
+  display:flex;flex-direction:column;gap:8px}
+.set-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.set-label{min-width:132px;font-size:12.5px;color:#c8cfff}
+.chips{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.chip{padding:4px 11px;border-radius:8px;border:1px solid var(--line);background:#161b36;
+  cursor:pointer;font-size:12px;color:#c8cfff;user-select:none;transition:.12s;white-space:nowrap}
+.chip:hover{background:#222a52;border-color:#3d4780}
+.chip.on{background:linear-gradient(180deg,#ffd75e,#e0a800);border-color:#ffe9a8;color:#2a1d00;font-weight:800;
+  box-shadow:0 0 10px rgba(255,190,60,.35)}
+.chip.used:not(.on){opacity:.45}
+.set-tip{font-size:11.5px;color:var(--dim);line-height:1.6}
+.track{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 11px;
+  border:1px solid var(--line);border-radius:10px;background:#161b36;cursor:pointer;transition:.14s}
+.track:hover{background:#20274a;border-color:#3d4780}
+.track.on{border-color:#ffe9a8;background:linear-gradient(90deg,#3b3010,#1b1934)}
+.track .tname{font-weight:700;font-size:13px}
+.track .tgen{font-size:11px;color:var(--dim);margin-top:1px}
+.track .tmark{font-size:11px;color:var(--gold);font-weight:700;white-space:nowrap}
+.slider{display:flex;align-items:center;gap:10px;flex:1;min-width:200px}
+.slider input[type=range]{flex:1;accent-color:#ffd75e;height:4px}
+.slider b{width:38px;text-align:right;font-size:12px;color:var(--gold);font-variant-numeric:tabular-nums}
+.stepper{display:flex;align-items:center;gap:8px}
+.stepper b{min-width:22px;text-align:center;color:var(--gold)}
+.lang-btns{display:flex;gap:8px}
+.lang-btns button.on{background:linear-gradient(180deg,#ffd75e,#e0a800);border-color:#ffe9a8;color:#2a1d00;font-weight:800}
+.badge-i{display:inline-block;background:#1d2442;border:1px solid var(--line);border-radius:6px;
+  padding:1px 7px;font-size:11px;color:#9fb0ff;margin-left:6px}
+/* ---- 解锁所有关卡 ---- */
+.unlock{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%}
+.unlock-form{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;
+  background:#10142a;border:1px solid var(--line);border-radius:12px;padding:8px 12px}
+.unlock-form.hidden{display:none}
+.unlock-form input{font:inherit;color:var(--txt);background:#0b0e1e;border:1px solid var(--line);
+  border-radius:9px;padding:7px 12px;min-width:190px;letter-spacing:2px;outline:none}
+.unlock-form input:focus{border-color:#ffe9a8;box-shadow:0 0 0 2px rgba(255,190,60,.25)}
+#unlock-msg{min-height:16px;text-align:center}
+/* ---- 双人模式 ---- */
+.c-red{color:var(--gold)}
+.c-blue{color:#4fc3ff}
+.lv.p1done{background:linear-gradient(180deg,#7a2038,#4d1424);border-color:#ff8ea3;color:#ffd8e0}
+.lv.p2done{background:linear-gradient(180deg,#123c5c,#0b2438);border-color:#4fc3ff;color:#c9ecff}
+.lv.both{background:linear-gradient(135deg,#7a2038 0%,#7a2038 49%,#123c5c 51%,#123c5c 100%);
+  border-color:#ffe9a8;color:#fff}
+/* ---- 多人房间大厅 / 形象 / 结算 / 作弊密码 ---- */
+.room-wrap{display:flex;gap:12px;width:100%;max-width:760px;align-items:stretch;flex-wrap:wrap;justify-content:center}
+.room-card{flex:1 1 320px;min-width:300px;max-width:380px;display:flex;flex-direction:column;gap:10px;text-align:left;
+  background:#10142a;border:1px solid var(--line);border-radius:14px;padding:14px}
+#room-host-card{order:-1}          /* 设置卡排最左（蛋仔派对式：选模式 / 开始在左上） */
+.room-card.ro{opacity:.62}         /* 房客只读：整卡调暗，控件各自 disabled 灰按键 */
+#room-mode-grid{grid-template-columns:repeat(auto-fit,minmax(84px,1fr))}
+.room-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;color:#c9d1ff}
+.room-head #room-count{color:var(--gold)}
+.room-list{display:flex;flex-direction:column;gap:6px;min-height:56px;max-height:200px;overflow:auto}
+.room-player{display:flex;align-items:center;gap:9px;background:#0b0e1e;border:1px solid var(--line);
+  border-radius:9px;padding:6px 10px;font-size:13px}
+.room-player.is-host{border-color:#4a5386;background:#131936}
+.room-player .sw,.rank-row .sw{width:16px;height:16px;border-radius:50%;display:inline-block;flex:none;
+  border:2px solid rgba(255,255,255,.55)}
+.room-player .score{margin-left:auto;font-size:11.5px;color:var(--dim)}
+.room-empty{color:var(--dim);font-size:12.5px;text-align:center;padding:10px}
+.room-line{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.room-code-row{display:flex;gap:10px;align-items:center;margin:8px 0 4px;font-size:12.5px;color:var(--dim)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.room-code{font-size:20px;letter-spacing:6px;color:#ffd75e;font-family:ui-monospace,Consolas,monospace;font-weight:700}
+.room-field{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:#c9d1ff}
+.room-field>span:first-child{min-width:64px;color:var(--dim)}
+.room-slots{display:flex;flex-direction:column;gap:8px}
+.slot-card{background:#0b0e1e;border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:7px}
+.slot-card.ok{border-color:#2f8f6c}
+.slot-head{font-size:12px;color:#c9d1ff;font-weight:700}
+.mode-chip{border-radius:999px;padding:6px 14px;font-size:12.5px}
+.mode-chip.on{background:linear-gradient(180deg,#ffd75e,#e0a800);border-color:#ffe9a8;color:#2a1d00;font-weight:700}
+.skin-chip{display:flex;align-items:center;gap:7px;border-radius:999px;padding:4px 10px;font-size:12px}
+.skin-chip.on{border-color:#ffe9a8;background:#232a52}
+.skin-chip i{width:18px;height:18px;border-radius:50%;display:inline-block;border:2px solid rgba(255,255,255,.6)}
+.style-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:6px;width:100%}
+#style-preview{background:radial-gradient(120px 70px at 50% 80%,#1c2144,#0b0d16);border:1px solid var(--line);border-radius:10px;width:100%;height:auto}
+.room-hud{position:absolute;left:50%;top:10px;transform:translateX(-50%);z-index:6;display:flex;gap:10px;align-items:center;
+  background:rgba(9,11,20,.78);border:1px solid var(--line);border-radius:999px;padding:5px 14px;
+  font-size:12px;color:#cfd6ff;pointer-events:none;backdrop-filter:blur(6px);flex-wrap:wrap;max-width:94%}
+.room-hud.hidden{display:none}
+.room-hud .rt{color:var(--gold);letter-spacing:1px}
+.room-hud .rp{display:inline-flex;align-items:center;gap:5px}
+.room-hud .rp.me{color:#ffe9a8}
+.room-hud .rp.ok{color:#7dffcb}
+.spec-tip{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:6;
+  background:#10261c;border:1px solid #2f8f6c;border-radius:999px;padding:7px 16px;
+  font-size:12.5px;color:#a9f0d0;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.35)}
+.spec-tip.hidden{display:none}
+.spec-tip b{color:#ffe9a8}
+.room-hud .rp i{width:12px;height:12px;border-radius:50%;display:inline-block;border:1.5px solid rgba(255,255,255,.6)}
+.room-hud .hpbar{width:52px;height:6px;border-radius:4px;background:#20263f;overflow:hidden;display:inline-block}
+.room-hud .hpbar i{display:block;height:100%;border-radius:4px}
+.room-hud u{text-decoration:none;color:#ff8ea3;font-weight:700}
+.room-rank{display:flex;flex-direction:column;gap:6px;width:100%;max-width:420px}
+.rank-row{display:flex;align-items:center;gap:10px;background:#10142a;border:1px solid var(--line);
+  border-radius:10px;padding:7px 12px;font-size:13px;color:#c9d1ff}
+.rank-row.first{border-color:#ffe9a8;background:#1a1f3d}
+.rank-row .no{color:var(--gold);width:20px;text-align:center}
+.rank-row .nm{flex:1;color:#fff}
+#cheat-form{width:100%;max-width:360px;display:flex;flex-direction:column;gap:10px;align-items:center;
+  background:#10142a;border:1px solid var(--line);border-radius:14px;padding:16px}
+#cheat-pw{width:100%;background:#0b0e1c;border:1px solid var(--line);border-radius:9px;color:#c8cfff;
+  font:inherit;font-size:14px;padding:9px 12px;letter-spacing:2px;text-align:center}
+#cheat-pw:focus{outline:none;border-color:#ffe9a8}
+#cheat-msg{min-height:16px;font-size:12.5px;color:#ff8ea3}
+</style>
+</head>
+<body data-page-node-id="GVpJXyXbAKoysGJC6FN3Uw" style="position:relative">
+<div data-page-node-id="MKX7iXyFvlByODkA7FAvhb" id="app">
+  <header data-page-node-id="dod3EFT3nFHEVvu8WwaYFs" class="topbar">
+    <div data-page-node-id="5qtmoWoGhP902uENqL6UWE" class="brand">
+      <div data-page-node-id="p3uRRMb2oe8ODH1cEi3dzV"><h1 data-page-node-id="1xVOfaBUdB09cn9YbJtrpJ"><!--pnid:dFxq4xPCYVcjLn9Xr56lYC-->谁才是赢家</h1><p data-page-node-id="LYhw6nMlNqxftZgh4vJyh5" data-i18n="app.subtitle"><!--pnid:etc1AoVeAsIUezSWYliTuk-->100 关 · 每一关都在骗你</p></div>
+    </div>
+    <div data-page-node-id="Fe2S0HmzWBURPYdBsSKgMN" class="hud">
+      <div data-page-node-id="knel9tB3CbqCDbFpM2V1lf" class="hud-item" id="box-level"><span data-page-node-id="rQvxjbTpIUZjnQIGYp5Lot" data-i18n="hud.level"><!--pnid:8jtbZVcgUnOMMFb7G0CAh0-->关卡</span><b data-page-node-id="YNLR1S3EpLlmc1ML14XJwD" id="hud-level"><!--pnid:vuvf5gmDbGZdci8C09EXCj-->12/100</b></div>
+      <div data-page-node-id="Lj4YMn11AO2t48re0Nx4rS" class="hud-item" id="box-time" style="display:none"><span data-page-node-id="V3lZOl86eRBlJcfOZivgTg" data-i18n="hud.time" id="hud-time-label"><!--pnid:G6jnJc8DsnoURLYxXr5cnZ-->本关用时</span><b data-page-node-id="639lzme7XHf9kZkQLAMbA8" id="hud-time"><!--pnid:gUhU1lcVKSyQMUzzaq0X4E-->0.0s</b></div>
+      <div data-page-node-id="341Iu2ozMwp2fTovqrS8IF" class="hud-item" id="box-total"><span data-page-node-id="s1jCBHDqbQiHzn09HmBdvP" data-i18n="hud.total"><!--pnid:kWKuA7ePO1BgLxfXllvJpy-->总死亡</span><b data-page-node-id="yr88YuFUey3J7zSiDqlK7p" id="hud-total"><!--pnid:2MAKdYhzSEoPdpL0RejQvI-->21</b></div>
+      <div data-page-node-id="Bnr1hBItG6W9Vi1zIhM9Xw" class="hud-item" id="box-p1" style="display:none"><span data-page-node-id="aSKAf7yox5pzmV1o6AQg0J" data-i18n="coop.p1deaths"><!--pnid:KQtbEg5JPoIE4QY7OIOq6z-->红魔死亡</span><b data-page-node-id="eWPJOnOJFHZrJLb1bnPNCQ" class="c-red" id="hud-p1"><!--pnid:HU46uF6KiF4tsejYPCeHtL-->0</b></div>
+      <div data-page-node-id="RDiBbyikbjpmuuuDO9Ut8G" class="hud-item" id="box-p2" style="display:none"><span data-page-node-id="CNVN5rqnB1Lif8GU4wKjtB" data-i18n="coop.p2deaths"><!--pnid:s5wesreDMqucNoSPwKtXqb-->蓝魔死亡</span><b data-page-node-id="aAveu55ASodaTWIscH4eos" class="c-blue" id="hud-p2"><!--pnid:bNMbF1q9Do30OxpbvQ4fTa-->0</b></div>
+      <div data-page-node-id="OXb9otERT6vNnt4AxC4eVD" class="hud-item" id="box-score" style="display:none"><span data-page-node-id="jM7Xt4BA8HVQuYVSba5V0e" data-i18n="hud.score" id="hud-score-label"><!--pnid:yZiIplckpyNNJNAboBoMpK-->分数</span><b data-page-node-id="v6BWTGnFINB9fcMaQdLwhq" id="hud-score"><!--pnid:k1lzqftBRaYUgj86ml8suR-->0</b></div>
+      <div data-page-node-id="4485S4Ws6bK1Lc9DHDOrHu" class="hud-item" id="box-best" style="display:none"><span data-page-node-id="F0QFK4stewykiPttAL0GgC" data-i18n="hud.best" id="hud-best-label"><!--pnid:aNsYwmF0zCztJskDSnqbGT-->最高分</span><b data-page-node-id="uSuDs4sxsxWDxEmiigraju" id="hud-best"><!--pnid:qWIBWb8olF0RwUKUNCjKGJ-->0</b></div>
+      <div data-page-node-id="KeVQKxNagNL9DOVFPJbnAl" class="hud-item" id="box-hp" style="display:none"><span data-page-node-id="FkkLW2kqN1lGBChvnrAYXy" data-i18n="gun.hp"><!--pnid:Tt3ZA4RoBhIIWLaxLpdLTZ-->血量</span><b data-page-node-id="qOcHQvz6qBNbTv9jZEw7Fm" class="c-hp" id="hud-hp"><!--pnid:oKGRjNOEpLLUQyqtBuWLxP-->100</b></div>
+      <div data-page-node-id="GLH5DWQeF9vJHt1moJdvyg" class="hud-item" id="box-gun" style="display:none"><span data-page-node-id="3e5jWiQ68fu7irKlCZCyjK" data-i18n="gun.weapon"><!--pnid:QSS0xlwpQa9WlPgmgaAnIz-->武器</span><b data-page-node-id="CyZjhZ9Bzg5lyXGOKDZhcH" id="hud-gun"><!--pnid:xaKGQkoSwtYvDUqJ8BENfX-->F1 手枪</b></div>
+      <div data-page-node-id="ikvYITmfFloWkQ9FJKtSPX" class="hud-item" id="box-wave" style="display:none"><span data-page-node-id="8Gifvdd5tgZCVJYFzlx2Vi" data-i18n="gun.bots"><!--pnid:engj64DPKocyi4BUNGdeL9-->剩余人机</span><b data-page-node-id="lXIjmcK6HNBeuZr4fpGg8U" id="hud-wave"><!--pnid:AtMzYW18dnAqL5m5milqDm-->0</b></div>
+      <div data-page-node-id="qIhYIu1WZK6fMC6WhIENvu" class="hud-item" id="box-round" style="display:none"><span data-page-node-id="1VCss5gPG2Z1Sv6QlkdgjE" data-i18n="gun.round"><!--pnid:rlpyYuLegFtuFkYkc4DQ3Y-->回合</span><b data-page-node-id="7R2PWqWTyVrG4fh9h7rGPN" id="hud-round"><!--pnid:COAtiSEGFd1b1kUPglUS4B-->1/10</b></div>
+      <div data-page-node-id="qIhYIu1WZK6fMC6WhIENvX" class="hud-item" id="box-pick" style="display:none"><span data-page-node-id="1VCss5gPG2Z1Sv6QlkdgjEX" data-i18n="hud.pick">技能</span><b data-page-node-id="7R2PWqWTyVrG4fh9h7rGPNX" id="hud-pick"></b></div>
+    </div>
+    <div data-page-node-id="wg6TPN5kBGOasCh1YZMIN1" class="actions">
+      <button data-page-node-id="BepvLFyNEETqYAzltDNeDf" class="sm" data-i18n-title="tip.music" id="btn-music" title="开 / 关背景音乐" style="opacity:0.35"><!--pnid:BOevOlUCsMwxyFShfPr16G-->🎵</button>
+      <button data-page-node-id="qP6FzSdh3gFHQOzdiY8lbJ" class="sm" data-i18n-title="tip.sound" id="btn-mute" title="开 / 关音效"><!--pnid:L0NYyb3GYuBKMMWwr7enDh-->🔊</button>
+      <button data-page-node-id="jA137wXXnLrvFfXhFsffmk" class="sm" id="btn-lang"><!--pnid:n7clBsPThaYf8uKqWqDncB-->中</button>
+      <button data-page-node-id="jA137wXXnLrvFfXhFsffmk2" class="sm" id="btn-joystick" data-i18n-title="tip.joystick" title="手机摇杆开关">🕹</button>
+      <button data-page-node-id="jA137wXXnLrvFfXhFsffmk3" class="sm" id="btn-fullscreen" data-i18n-title="tip.fullscreen" title="全屏游玩">⛶</button>
+      <button data-page-node-id="jA137wXXnLrvFfXhFsffmk4" class="sm" id="btn-cheat" data-i18n-title="tip.cheatBtn" title="作弊模式（需密码）">🔒</button>
+    </div>
+  </header>
+
+  <main data-page-node-id="zrKiQZ1WT8hneR3YUAOG1N" id="stage">
+    <canvas data-page-node-id="9QCIREjUDgPNZZ7VPW2QV1" height="560" id="cv" width="960"></canvas>
+    <div data-page-node-id="xQJ2of4z0Hyu4dhTebfjRn" class="hint" id="hint"></div>
+    <div data-page-node-id="mlpJMFRbBUzAJC3hPMhDqR" class="cheat-dots" id="cheat-dots"><i data-page-node-id="clnghXXhy68Md4t9olnAeW"></i><i data-page-node-id="M3HQfwCb13cBJPepJ3TEiY"></i><i data-page-node-id="BChlaNaFDc9uQoDex3z2VM"></i><i data-page-node-id="aFAyODLMlQXLJZdVhd5Byw"></i><i data-page-node-id="rtT4PGr389NuaM1fWrtwzY"></i></div>
+    <div data-page-node-id="1HiujNVYAiBD0PYSAnZUbT" class="cheat-badge" id="cheat-badge"><!--pnid:5J14BNkCLxAjIgm2Xw6jLg-->作弊模式 · 无敌 + 飞行 + 1.8 倍移速（再连按 5 下「5」关闭）</div>
+    <!--pnid:Ne7Tt2Ww9Qq5Kk3Mm8Vv4Bb--><!-- 联机状态牌：延迟 + 角色，只在联机对局里显示 -->
+    <div data-page-node-id="Nt8Uu3Ww9Qq5Kk2Mm7Vv5Cc" class="net-tag" id="net-tag"></div>
+
+    <!--pnid:RoomHud--><!-- 多人房间 HUD：模式 / 倒计时 / 实时名单（散打带血条与击倒数） -->
+    <div class="room-hud hidden" id="room-hud"></div>
+    <div class="spec-tip hidden" id="spec-tip">🏁 <span data-i18n-html="room.specWait">已到终点！正在观看 <b></b> 的视角，等 TA 通关…</span></div>
+
+    <!--pnid:OUJN8MO6u6mcyMxxUN8i4Z--><!-- 训练场热键一览：只在「枪战训练场」里显示。
+         十个热键靠一句 hint 记不住，常驻一份图例才用得住。 -->
+    <div data-page-node-id="Fr8ej2zOneFfrE0vI0tIe2" class="train-legend" id="train-legend">
+      <b data-page-node-id="88vNbrbxbtWn4f3zOstvCQ" data-i18n="gun.trainLegend"><!--pnid:9vyOWfjW3CZwbA9hVm6ZNB-->训练热键</b>
+      <span data-page-node-id="VTdT78MlWfvCgW4s6ge7Xu"><i data-page-node-id="4xIxw5mxfa5JKCAobDPxjn"><!--pnid:CAJANez4PDR35WExlUXgQG-->0</i><em data-page-node-id="n05KhDkIbQXFdAWXgM48Mh" data-i18n="gun.trainK0"><!--pnid:1tGoRDykcDTUfSzPyBAltf-->加敌人</em></span>
+      <span data-page-node-id="kAoJ62Ns5D9Rg9f4U5cfsS"><i data-page-node-id="xb4nqfF7SCwCVWfGopXli5"><!--pnid:RjWEyfCFJM1Gx5zZp4vbdD-->1</i><em data-page-node-id="YvGcxGzMjPAgFVbfYuiAm2" data-i18n="gun.trainK1"><!--pnid:x89iLUAeg6hBPkSb7Dn4Ta-->减敌人</em></span>
+      <span data-page-node-id="pkhFq59pyWGnRoAZnbQt4s"><i data-page-node-id="GvNmzlE3oOhTbzRIGvJSl4"><!--pnid:0C4nogESkopXXt2bCvD1JV-->2</i><em data-page-node-id="HjWIvob5nmUg491thN5xgL" data-i18n="gun.trainK2"><!--pnid:lWglbvMW2ZZeN16ASqrhCY-->清空</em></span>
+      <span data-page-node-id="fXc7ogKnaGNtHaU4Aif7Lm"><i data-page-node-id="1Ib1cez4TLSBpjMPVm7DyK"><!--pnid:t6pk3xDfcqMPD5Tb9XKZ7c-->3</i><em data-page-node-id="wRBaJXettkgAxPFMzapA4Y" data-i18n="gun.trainK3"><!--pnid:390vRaM4sOxHYqRw8VjeQE-->玩家回血</em></span>
+      <span data-page-node-id="zurtzvNXo9MtifUz2VzApE"><i data-page-node-id="AEV1kHhnKGtcqPsTUvA1By"><!--pnid:XyhaeLCvxM8eVqRKi8p3Rt-->4</i><em data-page-node-id="OqgsgBc73xqNZsWXGjOeOv" data-i18n="gun.trainK4"><!--pnid:8ovN3Ph8WRYZ9nZy7EifXP-->敌人回血</em></span>
+      <span data-page-node-id="a0n8vslzYcTagsx5nVwMwZ"><i data-page-node-id="UXobEwQBsYlMyb3YVVj46H"><!--pnid:xx5JV3S0AsNd6GMpA2SDHE-->5</i><em data-page-node-id="RziIY2G8zHhMVT6rRrxOWZ" data-i18n="gun.trainK5"><!--pnid:WQnixBXdBGaDhTW9zIDuES-->玩家血×2</em></span>
+      <span data-page-node-id="4PPVqrn27OdVQPCluhyp2A"><i data-page-node-id="57pT17lc1TP8Mc6gJ8s9Am"><!--pnid:nBWM1RriTH2hms8PocxZim-->6</i><em data-page-node-id="Fdteb1ZM5v7okslH4Yv64u" data-i18n="gun.trainK6"><!--pnid:jED2Vo4gCeV5X0s8vIwjhP-->敌人血×2</em></span>
+      <span data-page-node-id="GqUw6Ke3TollIVb3deyT1M"><i data-page-node-id="mwQODj0360n4w7gjSYVPQv"><!--pnid:jPJy7f9J4hYjh14fun4Qvz-->7</i><em data-page-node-id="wuTC3paKlf36tx9kP6CcR0" data-i18n="gun.trainK7"><!--pnid:nNbiAOXaGvOeLefQd53AWN-->敌人静止</em></span>
+      <span data-page-node-id="uWiQm2q6F1oGiLz49Nti37"><i data-page-node-id="pgytQKcOBJpYYbEXrfdwV8"><!--pnid:CLtgkyQgPEPp8ZmqYwKhUk-->8</i><em data-page-node-id="3dY0xp82ZJ1wYpLC95GHFT" data-i18n="gun.trainK8"><!--pnid:IDw43dkK1tWOYoioOTa2Gk-->敌人移动</em></span>
+      <span data-page-node-id="eOHwtObj6KKa6G7lnRQs8M"><i data-page-node-id="8AQiyPJJE9r3myuXmnn4Jc"><!--pnid:IM0WtWcuudkSb1cL9FFhHp-->9</i><em data-page-node-id="u7a43t6EFAFIYLCjEzEu8I" data-i18n="gun.trainK9"><!--pnid:4aAEBbFQHPAFXwgxL6h8bS-->敌人攻击</em></span>
+    </div>
+
+    <!--pnid:BIIai3VRE7k2J2qHgmLLSp--><!-- 主页 -->
+    <div data-page-node-id="mw1uY3eOotQLAwEIBxOKG4" class="overlay" id="ov-menu">
+      <p data-page-node-id="RDDwwPs41Gg9IBsgGl6O7Q" data-i18n-html="menu.desc"><!--pnid:OzKb17EH6i9tLjaCkLDT1S-->一款「看起来很简单」的陷阱平台跳跃游戏。抵达发光的门即可通关，但它未必让你如愿。<br data-page-node-id="9NASvPIiXRwFwIvktox05z"><!--pnid:enmZVYzLuv49xGtnp4BjJ7-->共 100 关，难度从第 1 关的新手引导一路爬升到地狱。</p>
+      <div data-page-node-id="zzoA0jPc14WBesmOcnrR7W" class="keys" id="menu-keys"><div data-page-node-id="TpbILiaTfAqxMgD3fr7Dfs" class="key"><b data-page-node-id="nxqYD5JSblMx3xv9RtsiQz"><!--pnid:iqxPzZaWYnDn2OnZlPZJgb-->← / A / → / D</b><!--pnid:yuRj6R3zWPlb7AwlrDwamc--> 移动</div><div data-page-node-id="zYpfKBubulyErVr2OOBe0v" class="key"><b data-page-node-id="sRITzNEvLJxIFQmQKulaRX"><!--pnid:2cWLreEMDCkTBrQbojFG3Q-->↑ / W</b><!--pnid:49zX3ZNCQvXscHqp7s5BXr--> 跳跃</div><div data-page-node-id="mfsH1OqXeFbzdvo2fIrrDw" class="key"><b data-page-node-id="X4MNQRPfIYgcXqmr9FTHQV"><!--pnid:FTKO532XJ4ltzPxIfsVGOq-->空格</b><!--pnid:gVpX8STPc0vT2n6Tf78xuM--> 下一关</div><div data-page-node-id="Prg9Vbd4nc9wmrOj26HLqM" class="key"><b data-page-node-id="pFMyj3ZKs5vhpl1c8k2PG7"><!--pnid:DgTDyUKNsNjfGGkaJ82h96-->R</b><!--pnid:IS8TwHLADuSYHaWN5KXLN9--> 重开本关</div><div data-page-node-id="0vkAAyEiF0h7aJrQcNrN1s" class="key"><b data-page-node-id="UZarBxz3N9NbWzquIe0W9D"><!--pnid:wd8Qnmb2bFFNXbhdeZFKNr-->Esc</b><!--pnid:0m8k7Nojfk6o6vNeqzmY2g--> 暂停</div><div data-page-node-id="ihh2OsTKlZffWPppo9nHSa" class="key"><b data-page-node-id="yJT0iSehapCaucUdiOOVJr"><!--pnid:zMu5iRIwsZzM1qjkd360i4-->L</b><!--pnid:vUnaDRC08swyOPVgLte7VH--> 关卡选择</div><div data-page-node-id="I0Xw37tAhsntMQDkxt7cTB" class="key"><b data-page-node-id="B4X6ImGOgi5A0RAO9Qs4CV"><!--pnid:dNPXwJBIP5zSLBdI4Tinqk-->5 / 小5 ×5</b><!--pnid:RjKFaTWTkWmzMUSansyh0F--> 作弊模式</div></div>
+      <div data-page-node-id="wWOnBocRARchADytMvhhBb" class="menu-btns">
+        <button data-page-node-id="rPDshOqX1tLf4MzC4Ze5aW" class="primary" data-i18n="menu.play" data-mode="continue" id="btn-play"><!--pnid:Ounkr1PQDuU9JTmiFS3TZp-->继续游戏 · 第 12 关</button>
+        <button data-page-node-id="TWkpk0y7Y7K36azsI8B0Z2" data-i18n="menu.select" id="btn-open-select"><!--pnid:A5oYLLuC10xl4hoqdL8vxw-->选择关卡</button>
+        <button data-page-node-id="XWqqqbF8coW9qDRzgbPeAy" data-i18n="menu.endless" id="btn-endless"><!--pnid:DGGdJwKvp6jxzaqGWaZcLv-->无尽模式</button>
+        <button data-page-node-id="6c6h8qVEfarEBEhFKIsXoi" data-i18n="menu.coop" id="btn-coop"><!--pnid:8DqEX6i2S6BffWShC0nTPh-->双人模式</button>
+        <button data-page-node-id="On7LnNeTwWxQ2bYzK3mHd8s" data-i18n="menu.online" id="btn-online"><!--pnid:Zk4VqRnP2WmXt9LbC6yD3f-->联机模式</button>
+        <button data-page-node-id="s7DeVNfxBTxkaX4G4SZSHI" data-i18n="menu.gun" id="btn-gun"><!--pnid:1eGDx44iAoQGl3HYqJrcs9-->枪战模式</button>
+        <button data-page-node-id="SV8Cjm5hNn1uOlg5oMnIql" data-i18n="menu.settings" id="btn-settings"><!--pnid:EuPgOnbFEJGZlOvdGPLZXf-->操作设置</button>
+        <button data-i18n="menu.account" id="btn-account">👤 账号 / 注册</button>
+        <button data-i18n="pause.admin" id="btn-admin-main" class="hidden">🛡 用户管理</button>
+      </div>
+    </div>
+
+    <!-- 账号：免费注册 / 登录 / 云存档（D1） -->
+    <div class="overlay hidden" id="ov-account">
+      <h2 data-i18n="acc.title">账号</h2>
+      <p class="set-tip" data-i18n="acc.desc">注册完全免费。登录后存档跟着账号走：进度、死亡数、枪战记录换设备也能接着玩。</p>
+      <div id="acc-out">
+        <div class="net-row"><span class="set-label" data-i18n="acc.name">用户名</span>
+          <input id="acc-name" class="net-select" maxlength="16" autocomplete="username" data-i18n-ph="acc.namePh" placeholder="2~16 个字符"></div>
+        <div class="net-row"><span class="set-label" data-i18n="acc.pw">密码</span>
+          <input id="acc-pw" class="net-select" maxlength="64" autocomplete="current-password" type="password" data-i18n-ph="acc.pwPh" placeholder="至少 6 位"></div>
+        <div class="row">
+          <button class="primary" id="btn-acc-login" data-i18n="acc.login">登录</button>
+          <button id="btn-acc-reg" data-i18n="acc.register">免费注册</button>
+        </div>
+      </div>
+      <div id="acc-in" class="hidden">
+        <p class="stat-line" id="acc-who"></p>
+        <p class="set-tip" id="acc-perm" style="min-height:16px"></p>
+        <div class="row">
+          <button class="primary" id="btn-acc-up" data-i18n="acc.upload">上传本地存档到云端</button>
+          <button id="btn-acc-down" data-i18n="acc.download">下载云端存档到本机</button>
+        </div>
+        <p class="set-tip" data-i18n="acc.syncTip">开着登录玩时，存档会自动同步到云端。</p>
+        <div class="row">
+          <button id="btn-acc-logout" data-i18n="acc.logout">退出登录</button>
+        </div>
+      </div>
+      <div class="set-tip" id="acc-msg" style="color:#ffd23f;min-height:18px"></div>
+      <div class="row"><button id="btn-acc-home" data-i18n="coop.home">返回主页</button></div>
+    </div>
+
+    <!--pnid:YTNao5SlIpuk3oD7w2Cwaj--><!-- 双人模式 -->
+    <div data-page-node-id="TcE3CjXR26yZhClPkyaixy" class="overlay hidden" id="ov-coop">
+      <h2 data-page-node-id="TPv3dTRcDTAMlBrXQj1Bu3" data-i18n="coop.title"><!--pnid:fHF42OQDi0xZmLtZ4dQqOU-->双人模式</h2>
+      <p data-page-node-id="jrgKVnCq2uXN8I4w78L2hi" data-i18n-html="coop.desc"><!--pnid:xkzvzxns9oo99xVWqxmoiq-->两个小人，两个门，一屏幕。<b data-page-node-id="y7mJbV9wqOAnNSvJsuUzv6" class="c-red"><!--pnid:qTAIWV5BHXqzeMmqNyJx1x-->红魔</b><!--pnid:HA0Q9YkcmN2eaCeO9NCA3E-->趟得过火池、碰水就溶；<b data-page-node-id="P4f8VWKqU2H1sN1rtzuwsg" class="c-blue"><!--pnid:cfVUUUdKpgaNRCakdeIKYE-->蓝魔</b><!--pnid:XPPWoK2Hsf7gxgtefxPeui-->趟得过水池、碰火就溶；紫色酸池会把两个都溶掉。<br data-page-node-id="3uv9EspuFByiSxkqI3nn7i"><!--pnid:El1zxpv3TOtdAOo2NnZuO6-->两个人都站进自己的门才算过关 —— 别忘了可以踩在队友头上借个高度。</p>
+      <div data-page-node-id="UmmlEsDDWpnVh8jirDwx0a" class="keys" id="coop-keys"><div data-page-node-id="afZJQACO5NdBXr6tGGZCR5" class="key"><b data-page-node-id="ZyfcBqnLky6sP7c6U5bowu" class="c-red"><!--pnid:vBah8AW8YsQjkooI8lEGfa-->← / → / ↑</b><!--pnid:W3Ukg4ngSeI1ckG5UJE4MJ--> 红魔（玩家 1）</div><div data-page-node-id="zIcJQ0py88EYlOYbItqIAr" class="key"><b data-page-node-id="O9XZlXlIQDDLNTicQA5JwY" class="c-blue"><!--pnid:QuIxFSPAiojua6aKpO74sZ-->A / D / W</b><!--pnid:Egzf59BTkGEVXixoEYOQGQ--> 蓝魔（玩家 2）</div></div>
+      <div data-page-node-id="hoY9bXjzzLDYhGOOwm7cVT" class="stat-line" id="coop-stat"><span data-page-node-id="rnNz5M2phnZ1y4N1egxuTz"><!--pnid:4l8UroWUny1m7BC2a6JqLK-->双人已通关 <b data-page-node-id="bBRYi6edDnj3pwh94xu6yw"><!--pnid:UCtOFsUL7seuddr5WGk40G-->0/30</b></span><span data-page-node-id="e39GFDVdjEJRIvd9eRGmuH"><!--pnid:RBBMuELXXwXbJGWEZcSFP2-->双人总分 <b data-page-node-id="TAFkJ2fXL3pDkkNwH0vEz5"><!--pnid:fz9Kjl3oTnUFmCkp04PN9l-->0</b></span><span data-page-node-id="aVjtwLADffUs7aCHuqqrH6"><!--pnid:yLxW4guFqk2zzmQCg5Ix5U-->双人总死亡 <b data-page-node-id="tCvLpHYDj1nAEyUR3tuCsJ"><!--pnid:JVWMpykV50G2xJ948DUtw7-->0</b></span></div>
+      <div data-page-node-id="zE8SbNK9cGAYjmiHBjmXYX" class="grid-select" id="coop-grid"><div data-page-node-id="oEtxYLbn3z0qfVm0jGujyU" class="lv cur" title="第 1 关"><!--pnid:DyA7sfQJwVjRxIfIVJEWJf-->1</div><div data-page-node-id="yNhvhQbppbGjPD05ec7qFr" class="lv lock" title="还没解锁"><!--pnid:FURWrb20GzUpPyl1KPlx5z-->2</div><div data-page-node-id="hr3BR7l1e7FXWkxOtAbckK" class="lv lock" title="还没解锁"><!--pnid:xETh0F3mhgNRD3XBe4dOKu-->3</div><div data-page-node-id="Cwt22v9tHLpDAMN4DwsNVm" class="lv lock" title="还没解锁"><!--pnid:F1FsGUCQOkPbDFJGwgDS6C-->4</div><div data-page-node-id="VMg81rdh8YPKtaoYbZK48O" class="lv lock" title="还没解锁"><!--pnid:ngwTueAoHKqrBDSijbnajh-->5</div><div data-page-node-id="V4gTMxykZEbn7m6DLcgM1o" class="lv lock" title="还没解锁"><!--pnid:YBsXbkOI1Sr0HFP83OnwYQ-->6</div><div data-page-node-id="GhtoISHxi94E1twJf30lnu" class="lv lock" title="还没解锁"><!--pnid:qAh6M9SSwioD7ccl2mAx9p-->7</div><div data-page-node-id="QYHUql5bFjJPLikVERFGC1" class="lv lock" title="还没解锁"><!--pnid:YxZEymeBunuD3tw759shzX-->8</div><div data-page-node-id="x7eQyzp4kXXB8TOXx5ebZb" class="lv lock" title="还没解锁"><!--pnid:s0SAewI34LC0KPzshqQCEh-->9</div><div data-page-node-id="eIIecgSiMsqMXmqpgfWfvm" class="lv lock" title="还没解锁"><!--pnid:kyoPpndtqpmKkTTBeSCxux-->10</div><div data-page-node-id="oimIKzgqyclY2rJvujAVBU" class="lv lock" title="还没解锁"><!--pnid:5774W6yLI40O6CHuyjgQsf-->11</div><div data-page-node-id="5GYccatBxKbgeADzwvheE1" class="lv lock" title="还没解锁"><!--pnid:TsCcEuEoes7bb3d0WPxp1X-->12</div><div data-page-node-id="GhuppUNjhDARC4ZwGXLICt" class="lv lock" title="还没解锁"><!--pnid:tDYKXT5HaDJE53wEE6SGkR-->13</div><div data-page-node-id="shngafiFXYXEYyAtAHkFGG" class="lv lock" title="还没解锁"><!--pnid:Zh7tYWl1FZ3vmhj4RJ72i7-->14</div><div data-page-node-id="cpgKiidzDlfwNId1xbkPX4" class="lv lock" title="还没解锁"><!--pnid:Pz7gQ8aaNOuQHXhdDIFaIm-->15</div><div data-page-node-id="TSyu3bLXx4d8KXy4TO4nxH" class="lv lock" title="还没解锁"><!--pnid:Spu1aa727DwkHd7rUDkoSi-->16</div><div data-page-node-id="7UaHBQ7j87u1OzI48jAHYU" class="lv lock" title="还没解锁"><!--pnid:kJG25S5SmdQqvNZVyZ3YVd-->17</div><div data-page-node-id="5pryr30jsqcCRLuD00ICFL" class="lv lock" title="还没解锁"><!--pnid:hTFL8oIEVQrOIIIrHtiTG2-->18</div><div data-page-node-id="jSjWsEkmT1CgjgIIKhHAkp" class="lv lock" title="还没解锁"><!--pnid:5zGrMCt4zmnTgmDcZ8r7gk-->19</div><div data-page-node-id="19NiBPsw3JLevgJ7DU0bVg" class="lv lock" title="还没解锁"><!--pnid:xRqXdYsEhn4HroBfG70tUh-->20</div><div data-page-node-id="Iy4k8wT4R4L7lF48uxIX7q" class="lv lock" title="还没解锁"><!--pnid:r3obeirxGMtNuQqi45nBdi-->21</div><div data-page-node-id="JgwnXJEqNmfnXqiC9n25Fe" class="lv lock" title="还没解锁"><!--pnid:GAHfZoReUufSabFo3ZtuG6-->22</div><div data-page-node-id="O7ZNDLCXgYxDQfFSik08sg" class="lv lock" title="还没解锁"><!--pnid:vUSkofxhwTUOKLAXP8zwQV-->23</div><div data-page-node-id="kbl2Qz71xsoy7jAuQWgsHk" class="lv lock" title="还没解锁"><!--pnid:uQ2SIi6Aq0tKpnOZ6LB3U1-->24</div><div data-page-node-id="F2ugSSFO1iAHRvbdYu8WrO" class="lv lock" title="还没解锁"><!--pnid:jpVU49gQ89YBfSRz43J0iA-->25</div><div data-page-node-id="8USQYLLwcvBuQmJoCOn0bz" class="lv lock" title="还没解锁"><!--pnid:MQRO6cU3d0y2xvVjQRkHYv-->26</div><div data-page-node-id="1xz3Z2FgGxAb9vXjJ5Iuvt" class="lv lock" title="还没解锁"><!--pnid:BcGHlHSKBGvUGAdFwKJZD3-->27</div><div data-page-node-id="a9RClHkIeUEQ8a5ClKqYCA" class="lv lock" title="还没解锁"><!--pnid:1Fo8km57KCZKkQhvqstSYv-->28</div><div data-page-node-id="GscJVVg95NPZMPpmYx0QX8" class="lv lock" title="还没解锁"><!--pnid:YTAsF9Uqjj8BrXqSk5ApYQ-->29</div><div data-page-node-id="UQ4KeBdIcCMORvdSBwlfgP" class="lv lock" title="还没解锁"><!--pnid:hYGpw4GtVX4rtixffiGztx-->30</div></div>
+      <div data-page-node-id="LwxpV5EpFvweyIgaMf3YWL" class="unlock">
+        <button data-page-node-id="cbVXOCUwoPJpLtQwJXweHB" class="sm" data-i18n="coop.unlock" id="btn-coop-unlock-all"><!--pnid:oDpyccBdS4lX6LnXZmJBdk-->解锁所有关卡</button>
+        <div data-page-node-id="lXTPSdQvqO2BPTBAxwc7gH" class="unlock-form hidden" id="coop-unlock-form">
+          <input data-page-node-id="fBr6hFoAsqIykP1MvCJPej" autocomplete="off" data-i18n-ph="coop.pwPlaceholder" id="coop-unlock-pw" maxlength="32" placeholder="密码" type="password">
+          <button data-page-node-id="cNTTPWD4SVKFp6kxIr5zOt" class="primary sm" data-i18n="select.confirm" id="btn-coop-unlock-ok"><!--pnid:kJXivXHaz1r80DYJNPtJKW-->确认</button>
+          <button data-page-node-id="kyLMyjpPEsTScvfCNg9Ccy" class="sm" data-i18n="select.cancel" id="btn-coop-unlock-cancel"><!--pnid:RIf0V5gYBsu5hA6xw5hD3L-->取消</button>
+        </div>
+        <div data-page-node-id="HvnoaUVHjKF6Xl4VzUhTGl" class="set-tip" id="coop-unlock-msg" style="color:#ffd23f"></div>
+      </div>
+      <div data-page-node-id="G2irvtA944umb2w2zEmaLA" class="row">
+        <button data-page-node-id="ZI0XXkDJb8WR6hq3PxzsOi" class="primary" data-i18n="coop.play" id="btn-coop-play"><!--pnid:ts0fiNVTOPA3f73mF9efY8-->开始这一关 · 第 1 关</button>
+        <button data-page-node-id="nLceF6B3LKi92hrAaaNyVs" data-i18n="coop.home" id="btn-coop-home"><!--pnid:DUXEXUf8gqRdKVmWinEpoW-->返回主页</button>
+      </div>
+    </div>
+
+    <!--pnid:Wn3Kp7YxTq2LmZvR8dCbH1--><!-- 联机模式 -->
+    <div data-page-node-id="On9Lm3NwQ7vKx2TpR6dYbC4" class="overlay hidden" id="ov-online">
+      <h2 data-page-node-id="On2Tt5Xw8QpLn3MvK7dRbF9" data-i18n="online.title"><!--pnid:Zq5Wn8Tt2Mx6Lp9Kv3Rd7Yb-->联机模式</h2>
+      <p data-page-node-id="On4Kk6Nn2Ww8Tt5Qq7Lm3Rv" data-i18n-html="online.desc"><!--pnid:Xc2Vb9Nn5Mm6Tt8Qq3Lp7Kw-->和好友在线联机闯双人关卡。</p>
+      <div data-page-node-id="On6Pp3Rr9Ww2Tt5Kk8Mm4Lv" class="row" id="online-menu">
+        <button data-page-node-id="On8Qq5Ss2Ww9Tt3Kk6Mm7Np" class="primary" data-i18n="online.host" id="btn-net-host"><!--pnid:Vb4Nn7Mm2Tt9Qq5Ss3Ww8Kk-->创建房间</button>
+        <button data-page-node-id="On1Rr6Tt3Ww8Qq2Kk5Mm9Nn" data-i18n="online.join" id="btn-net-join"><!--pnid:Nb5Mm8Tt2Ww9Qq3Ss6Kk4Vv-->加入房间</button>
+        <button data-page-node-id="On3Ss7Uu4Ww9Qq2Kk8Mm5Tt" data-i18n="online.bc" id="btn-net-bc"><!--pnid:Mm6Nn9Uu3Ww8Qq2Ss5Kk7Tt-->本机双窗联机</button>
+        <button data-page-node-id="On5Tt8Vv5Ww9Qq3Kk2Mm6Uu" data-i18n="online.home" id="btn-net-home"><!--pnid:Kk7Nn2Vv4Ww8Qq3Ss6Mm9Uu-->返回主页</button>
+      </div>
+
+      <!-- 房客：输入 5 位房间号直接进房 -->
+      <div class="net-panel hidden" id="net-guest-panel">
+        <div class="net-role" id="net-guest-role"></div>
+        <p class="set-tip" data-i18n="online.joinTip2"></p>
+        <div class="net-row">
+          <span class="set-label" data-i18n="room.code"></span>
+          <input id="net-code-in" class="net-select" maxlength="6" data-i18n-ph="online.codePh" placeholder="ABC23" style="text-transform:uppercase;letter-spacing:4px">
+          <button class="primary sm" id="btn-net-join-go" data-i18n="online.doJoinRoom"></button>
+        </div>
+        <div class="row">
+          <button class="sm" id="btn-net-cancel" data-i18n="room.back"></button>
+        </div>
+      </div>
+
+      <div class="set-tip" id="net-status" style="color:#8b93bd;min-height:20px"></div>
+    </div>
+
+    <!-- 多人房间大厅：房主选模式 / 加人 / 开始，房客等待 -->
+    <div class="overlay hidden" id="ov-lobby">
+      <h2 data-i18n="room.lobbyTitle">多人房间</h2>
+      <div class="room-wrap">
+        <div class="room-card">
+          <div class="room-head"><span id="room-who">房主（我）</span><span id="room-count">1/8</span></div>
+          <div class="room-code-row"><span data-i18n="room.code">房间号</span><b id="room-code" class="room-code">—</b>
+            <button class="sm" id="btn-room-link" data-i18n="room.copyLink">复制房间链接</button></div>
+          <div class="room-list" id="room-roster"></div>
+          <div class="room-line hidden" id="room-join-row">
+            <input id="room-join-code" class="net-select" maxlength="6" data-i18n-ph="online.codePh" placeholder="ABC23" style="text-transform:uppercase;letter-spacing:3px;flex:1;min-width:90px">
+            <button class="sm primary" id="btn-room-join" data-i18n="online.doJoinRoom">加入</button>
+          </div>
+          <div class="room-line">
+            <button class="sm" id="btn-room-style" data-i18n="room.style">编辑形象</button>
+            <button class="sm" id="btn-room-leave" data-i18n="room.leave">离开房间</button>
+          </div>
+        </div>
+        <div class="room-card" id="room-host-card">
+          <div class="room-line">
+            <button class="primary sm" id="btn-room-ready">准备</button>
+            <span class="set-tip hidden" id="room-hostonly-tip" data-i18n="room.hostOnly">只有房主能修改设置</span>
+          </div>
+          <div class="sec-title" data-i18n="room.settings">房间设置（仅房主可选模式）</div>
+          <div class="room-field"><span data-i18n="room.pick">本局模式</span></div>
+          <div class="mode-grid" id="room-mode-grid">
+            <button class="mode-card" id="btn-mode-coop" data-i18n-title="room.modeCoopTip"><b>🚪</b><span data-i18n="room.modeCoop">闯关模式</span></button>
+            <button class="mode-card" id="btn-mode-gffa" data-i18n-title="room.modeGffaTip"><b>🔫</b><span data-i18n="room.modeGffa">枪战大乱斗</span></button>
+            <button class="mode-card" id="btn-mode-gteam" data-i18n-title="room.modeGteamTip"><b>🛡️</b><span data-i18n="room.modeGteam">枪战团队</span></button>
+            <button class="mode-card" id="btn-mode-duo" data-i18n-title="room.modeDuoTip"><b>👥</b><span data-i18n="room.modeDuo">双人模式</span></button>
+            <button class="mode-card" id="btn-mode-endless" data-i18n-title="room.modeEndlessTip"><b>♾️</b><span data-i18n="room.modeEndless">无尽模式</span></button>
+          </div>
+          <div class="room-field" id="room-stage-field"><span data-i18n="room.stageDiff">关卡难度（一关一关选，共 5 关一回合）</span>
+            <select id="room-stage" class="net-select"></select>
+          </div>
+          <div class="room-field hidden" id="room-goal-field"><span data-i18n="room.goal">胜负目标</span>
+            <select id="room-goal-type" class="net-select">
+              <option value="time" data-i18n="room.goalTime">时间到</option>
+              <option value="kills" data-i18n="room.goalKills">先到达击杀数</option>
+            </select>
+            <select id="room-goal-val" class="net-select"></select>
+          </div>
+          <!-- 房主设置（模仿我的世界正版玩家设置）：作弊授权 / 全员规则，随房间配置广播 -->
+          <div class="set-sec" id="room-rules">
+            <div class="sec-title" data-i18n="room.rulesTitle">房主设置（模仿我的世界）</div>
+            <div class="track" id="rule-self"><span class="tname" data-i18n="room.ruleSelf">允许自己作弊</span><b class="tmark" id="rule-self-v">关</b></div>
+            <div class="track" id="rule-others"><span class="tname" data-i18n="room.ruleOthers">允许他人作弊</span><b class="tmark" id="rule-others-v">关</b></div>
+            <div class="track" id="rule-inv"><span class="tname" data-i18n="room.ruleInv">全员无敌</span><b class="tmark" id="rule-inv-v">关</b></div>
+            <div class="track" id="rule-fly"><span class="tname" data-i18n="room.ruleFly">全员飞行</span><b class="tmark" id="rule-fly-v">关</b></div>
+            <div class="room-field"><span data-i18n="room.ruleSpeed">全员移速加成</span>
+              <select id="rule-speed" class="net-select">
+                <option value="1" data-i18n="room.speed1">正常速度</option>
+                <option value="1.3" data-i18n="room.speed2">1.3 倍</option>
+                <option value="1.6" data-i18n="room.speed3">1.6 倍</option>
+              </select>
+            </div>
+            <p class="set-tip" data-i18n="room.rulesTip">「允许作弊」开启后，对局里连按作弊键（默认 5）即可开关个人作弊；「全员无敌 / 全员飞行 / 移速加成」不用按键，开局直接生效。</p>
+          </div>
+          <div class="room-field"><span data-i18n="room.addPlayer">加人</span>
+            <button class="sm" id="btn-room-add" data-i18n="room.add">复制链接加人</button>
+          </div>
+          <p class="set-tip" data-i18n="room.howJoin"></p>
+          <p class="set-tip" id="room-mode-tip" data-i18n-html="room.modeCoopTip"></p>
+          <button class="primary" id="btn-room-start" data-i18n="room.start">开始游戏</button>
+        </div>
+        <div class="room-card hidden" id="room-guest-card">
+          <div class="sec-title" data-i18n="room.waitHost">等待房主开始</div>
+          <p class="set-tip" id="room-guest-info"></p>
+          <p class="set-tip" data-i18n-html="room.guestTip"></p>
+          <div class="room-line">
+            <button class="sm" id="btn-room-style-match" data-i18n="room.style">编辑形象</button>
+          </div>
+        </div>
+      </div>
+      <div class="set-tip" id="room-status" style="color:#8b93bd;min-height:18px"></div>
+      <div class="row">
+        <button class="sm" id="btn-room-home" data-i18n="pause.home">主页</button>
+      </div>
+    </div>
+
+    <!-- 观战选择器：闯关时已到终点的人可以挑一个还没通关的玩家围观 -->
+    <div class="spec-choose hidden" id="spec-choose">
+      <span data-i18n="room.specPick">观战：</span>
+      <div id="spec-list" class="spec-list"></div>
+    </div>
+
+    <!-- 形象编辑：临时昵称 + 皮肤（只在本房间内有效） -->
+    <div class="overlay hidden" id="ov-style">
+      <h2 data-i18n="room.styleTitle">我的形象</h2>
+      <div class="room-card" style="max-width:460px">
+        <div class="room-field"><span data-i18n="room.nickname">昵称</span>
+          <input id="style-name" class="net-select" maxlength="10" style="flex:1" data-i18n-ph="room.namePh">
+        </div>
+        <div class="room-field"><span data-i18n="room.preset">预设</span></div>
+        <div class="style-grid" id="style-presets"></div>
+        <div class="room-field"><span data-i18n="room.custom">自定</span>
+          <input type="color" id="style-body" value="#ffd23f" data-i18n-title="room.colorBody">
+          <input type="color" id="style-horn" value="#ff6b6b" data-i18n-title="room.colorHorn">
+        </div>
+        <canvas id="style-preview" width="220" height="120"></canvas>
+      </div>
+      <div class="row">
+        <button class="primary" id="btn-style-save" data-i18n="room.save">保存</button>
+        <button id="btn-style-cancel" data-i18n="room.cancel">取消</button>
+      </div>
+    </div>
+
+    <!-- 散打结算 -->
+    <div class="overlay hidden" id="ov-room-over">
+      <h2 id="room-over-title">本局结束</h2>
+      <p id="room-over-tip" data-i18n="room.overTip"></p>
+      <div class="room-rank" id="room-rank"></div>
+      <div class="row">
+        <button class="primary" id="btn-room-again" data-i18n="room.again">再来一局</button>
+        <button id="btn-room-exit" data-i18n="room.backLobby">回大厅</button>
+      </div>
+    </div>
+
+    <!-- 作弊口令框已下线：作弊改由账号权限控制（至高账号 / 被授权用户） -->
+
+    <!-- 至高账号 · 用户管理（Esc 暂停菜单进入，仅管理员） -->
+    <div class="overlay hidden" id="ov-admin">
+      <h2 data-i18n="admin.title">用户管理</h2>
+      <p class="set-tip" data-i18n="admin.desc">查看全部注册账号；可授予 / 收回作弊权限、封禁 / 解封、删除账号。至高账号不可操作。</p>
+      <div id="admin-body" class="admin-body"></div>
+      <div class="row">
+        <button class="primary" id="btn-admin-refresh" data-i18n="admin.refresh">刷新</button>
+        <button id="btn-admin-back" data-i18n="admin.back">返回</button>
+      </div>
+    </div>
+
+    <!--pnid:yVk1TkYi2izRhpuM6K00UQ--><!-- 关卡选择 -->
+    <div data-page-node-id="8S7qzOrsWsy5YcfyS6lNqD" class="overlay hidden" id="ov-select">
+      <h2 data-page-node-id="5MjtRTA704Eham2M54eCta" data-i18n="select.title"><!--pnid:nif6HnzqGpBlbF5erEbLIL-->关卡选择</h2>
+      <div data-page-node-id="IhvcM2Sf8kySMIwPsKJxs0" class="stat-line" id="select-stat"><span data-page-node-id="fLGBWf7ukuzCXlbgYCQlmJ"><!--pnid:VbPPrx3MAZM28uuzGBEWA4-->已通关 <b data-page-node-id="uvzHIU9fg1KV59oHWZ3to3"><!--pnid:IVPHBpOBgj77KTPpRBglSX-->11/100</b></span><span data-page-node-id="CEOFMAFBYPzKoNEAt4216f"><!--pnid:SQgLCv4zavBj261GyibdkF-->总死亡 <b data-page-node-id="JLqeoua0VZdapZowb0Rd93"><!--pnid:SA93LQnbjTxHpWfXW66Edq-->21</b></span><span data-page-node-id="nJUA1r6v2gxF1qm203zuER"><!--pnid:l9TJ3lT8zTxrFSVesErmKI-->作弊过 <b data-page-node-id="GHFy8yvKnj24ekJ2IacAKe"><!--pnid:3hO6JTiXGVwmqerLw8yN3z-->否</b></span></div>
+      <p data-page-node-id="S0gAzOm5FcaLvLWwRzORDY" class="set-tip" data-i18n="select.tip" style="max-width:none"><!--pnid:m85YGBgHGBnuSDm7tFQs19-->点一个关卡直接开始。</p>
+      <div data-page-node-id="QjuroAa08R84iwQBLciHQN" class="grid-select" id="select-grid"><div data-page-node-id="e98nWvCdgnnyxzCDi2sodb" class="lv done" title="最佳 3.97s"><!--pnid:wPhLPNh4RVKwnrsXd83jwQ-->1</div><div data-page-node-id="QLuKzRfmrBwMHpvaFbOS8V" class="lv done" title="最佳 2.98s"><!--pnid:8oH9t9VQe251CvlJxoOS7l-->2</div><div data-page-node-id="1hM6oYdB1GkldD9rqQtG4q" class="lv done" title="最佳 16.10s"><!--pnid:rPdv498SvrCRvs9fDdO3a5-->3</div><div data-page-node-id="W5cpTBjywKUZahI6Ljzlcp" class="lv done" title="最佳 3.38s"><!--pnid:jngvrNWNbAWtKjZiBzkOmo-->4</div><div data-page-node-id="kQhFFayAe9EcroWH1Ws0fk" class="lv done" title="最佳 3.15s"><!--pnid:wISE6iHKmCHWAIvp9Qu4ui-->5</div><div data-page-node-id="BpQwo2rj2fKY4KEfHzwWgk" class="lv done" title="最佳 3.75s"><!--pnid:N4yFZwM4GmvvRh18byVjRc-->6</div><div data-page-node-id="yYPczZzsfymQTp1NbqrcnY" class="lv done" title="最佳 3.75s"><!--pnid:01qE3vbMh3fBIOs1c29rGA-->7</div><div data-page-node-id="CrFy8tYafSNoVU4WnZOG2P" class="lv done" title="最佳 3.77s"><!--pnid:8umilHgNZcocha8ldgQCMh-->8</div><div data-page-node-id="GUL9twwYJUbEzndYEv0dWy" class="lv done" title="最佳 3.50s"><!--pnid:0DVPY4fbemK29w9VDx3pNo-->9</div><div data-page-node-id="mB2NNew5AVNclW6zbjD1Se" class="lv done" title="最佳 3.43s"><!--pnid:DrJBCq2jjM2556mZfM4tdI-->10</div><div data-page-node-id="udF0sFlVyhB8qPPQ7wkIoh" class="lv done" title="最佳 3.58s"><!--pnid:vxk8m4xoSziVm3DpsnGlrj-->11</div><div data-page-node-id="eWqzV46qYNKyYRF6Kcawes" class="lv cur" title="未通关"><!--pnid:W9ZPPZUuGXYnhCpMR0IFyV-->12</div><div data-page-node-id="ZvQbcLEcIGaHZhA1X1wt5X" class="lv lock" title="未解锁"><!--pnid:If1opc8LTLxrwG1SdvLyX6-->13</div><div data-page-node-id="fLmSXDGLGni9gnGGNGnGEV" class="lv lock" title="未解锁"><!--pnid:w3HN7coUs7iyd5mNmOOSr6-->14</div><div data-page-node-id="gv4rX9SV216DL8OvxJsaIt" class="lv lock" title="未解锁"><!--pnid:fURj1aB6SJZFRNt7SkbLCD-->15</div><div data-page-node-id="6auxPqq4OY7gD35BqlSjMN" class="lv lock" title="未解锁"><!--pnid:hC8FVs3PGfmulzgJFNxkhp-->16</div><div data-page-node-id="AcgRVenkR2BlMLlRo5vqKX" class="lv lock" title="未解锁"><!--pnid:aPwnShAQDGg1qtQNhQCCH4-->17</div><div data-page-node-id="g9lBMko9ubXNjUmra8KMAQ" class="lv lock" title="未解锁"><!--pnid:Fwt3NKqO0a0E0H0tgPH7s4-->18</div><div data-page-node-id="TZSGLrXCg7tRBMQ5zRJbtg" class="lv lock" title="未解锁"><!--pnid:6nrieqQH4GOcFateNGKQi0-->19</div><div data-page-node-id="e9ZhtRb7gpoZxa5di5ImCk" class="lv lock" title="未解锁"><!--pnid:1Bjf0Rx6hpv9QsDHGxmJhu-->20</div><div data-page-node-id="pp4VtqMu2YvQA5JGTK4f7E" class="lv lock" title="未解锁"><!--pnid:yzQVQW1olBYUf3GkwYFSup-->21</div><div data-page-node-id="U7d8ZV0y4OHKA5UsJn1VLL" class="lv lock" title="未解锁"><!--pnid:CAqoXm3SMKqdBTyi1hXqYm-->22</div><div data-page-node-id="TYPTPQsnv2c0ZiQOSFRKuF" class="lv lock" title="未解锁"><!--pnid:48AyUFXCFhHeZUm2dN2wV8-->23</div><div data-page-node-id="IQtPsFNGUeD6FOaZ4hVdhH" class="lv lock" title="未解锁"><!--pnid:PXjbxO25L6xT2iZUeomDHr-->24</div><div data-page-node-id="yGgRbFW0a2nReMA4UkXJVl" class="lv lock" title="未解锁"><!--pnid:lYyRzYRGif13oljLg236CJ-->25</div><div data-page-node-id="68zanOCpiqyPrkUh1smPo4" class="lv lock" title="未解锁"><!--pnid:Nzm9TGZGC2zy0x52iRkPrN-->26</div><div data-page-node-id="Gtzj8gTdG4gIMuiC4xLCsC" class="lv lock" title="未解锁"><!--pnid:2thrthYket5Tdvgj8XyROa-->27</div><div data-page-node-id="UJlTMOdiIl6AoqY8sBA8Iv" class="lv lock" title="未解锁"><!--pnid:aAI6fJw92rE55uF7LzAEgX-->28</div><div data-page-node-id="xInxKYqY8dsQqTDKJmXnTC" class="lv lock" title="未解锁"><!--pnid:tLzyJVfxUi97j3dpbObhzE-->29</div><div data-page-node-id="52Kw7QIbNWGotEw2hrLA3V" class="lv lock" title="未解锁"><!--pnid:EFGenE0RM5kjD5wUUXwl6X-->30</div><div data-page-node-id="LFJvKSOEI22RnFdTKlqP9D" class="lv lock" title="未解锁"><!--pnid:0s6wlF4ozW7e6VjzbrAiTH-->31</div><div data-page-node-id="b9Gs41OlTcYtCqMPVxL0HK" class="lv lock" title="未解锁"><!--pnid:0hjbeOMLDFpV3I8hs2IFFW-->32</div><div data-page-node-id="l2N8vMChz2QwGu496HzAF2" class="lv lock" title="未解锁"><!--pnid:ZYujSAdkpqsblFeEsW13qj-->33</div><div data-page-node-id="QnN7NJm47bxRqGizRNSZvy" class="lv lock" title="未解锁"><!--pnid:d5LKjYzfwblOOVrPLD6oxy-->34</div><div data-page-node-id="SHg1qbdgkDoy7OxwmQKYVf" class="lv lock" title="未解锁"><!--pnid:8ruEZsFKzmJ1UiQ9TCxQUN-->35</div><div data-page-node-id="OnYiAtkvNeuTqeGHYV4LHg" class="lv lock" title="未解锁"><!--pnid:ZbGzHxQq3eHXmu5f0KQmW7-->36</div><div data-page-node-id="wktSgtW8zQJyUZWust5jZH" class="lv lock" title="未解锁"><!--pnid:68ZHBX1EEpn9G3XBm97GVL-->37</div><div data-page-node-id="qQSdtdexZ01RyashrcW1rz" class="lv lock" title="未解锁"><!--pnid:38I5s5U5sjX4XJUPdln2oe-->38</div><div data-page-node-id="8zgvohCgACM6Yubxc9GGdC" class="lv lock" title="未解锁"><!--pnid:f96OvWkBqG6O9RqF7WCkjb-->39</div><div data-page-node-id="Nbww3NgQiuYhojWvgRHMv1" class="lv lock" title="未解锁"><!--pnid:8i2BwYUOqACwpDld7kbfCE-->40</div><div data-page-node-id="J58mcpOTH4oTq4QiqtluHO" class="lv lock" title="未解锁"><!--pnid:kvNsBGJt5DHDCHcRXUZvSI-->41</div><div data-page-node-id="6K5oea4uoGscRZmdVI0VKP" class="lv lock" title="未解锁"><!--pnid:GtcIVnym9JieTYRnD8zlfL-->42</div><div data-page-node-id="RpWiwExNZ5Sujib3xkP4kx" class="lv lock" title="未解锁"><!--pnid:3UFcqL54d5jw0FOd3RBpry-->43</div><div data-page-node-id="npoL2kRywRbPQHNtFV9Efu" class="lv lock" title="未解锁"><!--pnid:HaOnWSrzau4Kd2xTMKGO6h-->44</div><div data-page-node-id="9f2Svpxgc0503DQ4lN2P8o" class="lv lock" title="未解锁"><!--pnid:8phHejs7SRzEMvqT0niI1J-->45</div><div data-page-node-id="DiMFQySNloHoi8V4o3pU15" class="lv lock" title="未解锁"><!--pnid:pogVE3e8CbxdzXHQc4ejLB-->46</div><div data-page-node-id="kTbAOe69Dez6RXT03oyvON" class="lv lock" title="未解锁"><!--pnid:rND36aJURhUJEFkgwYgYex-->47</div><div data-page-node-id="NTt3kCcXg0sxbJLYAiaI0i" class="lv lock" title="未解锁"><!--pnid:mgptB9AaEVT6LTzeOS0hkG-->48</div><div data-page-node-id="QB3KR3WJOxifS9b68H2j5M" class="lv lock" title="未解锁"><!--pnid:VWnTuZ6vjz5pDVtuOKSIaQ-->49</div><div data-page-node-id="9glItzcK1BYDb4GQknX0W6" class="lv lock" title="未解锁"><!--pnid:KE4QloqmRfHLdz7iAJscWs-->50</div><div data-page-node-id="tZpXkeDeDiKKoSV8OOwrX5" class="lv lock" title="未解锁"><!--pnid:bN2DmwQXXIrDITE57Og2Yv-->51</div><div data-page-node-id="wDxNEyYxXC66AViszDjxwG" class="lv lock" title="未解锁"><!--pnid:tLqGtnB4yABtvwwgAMOkUk-->52</div><div data-page-node-id="X6fIerDw51b89zg7UnKbm7" class="lv lock" title="未解锁"><!--pnid:7Aegxv2SaKZQyjs0NhtETc-->53</div><div data-page-node-id="JxkXLNA1VJVZa67c1DXVQG" class="lv lock" title="未解锁"><!--pnid:2EqbM9TgKmIpUDkViSgYHq-->54</div><div data-page-node-id="VAZmiDK5XLHFVwY9FJK67j" class="lv lock" title="未解锁"><!--pnid:DVGI4xnpJbZWSLosjpgSHN-->55</div><div data-page-node-id="oJAIG3mzW5yZ8Ei7Cww8yR" class="lv lock" title="未解锁"><!--pnid:aVUd7mzwrULhph8OKOaWhV-->56</div><div data-page-node-id="Q3m7fSGiGRTRXkNRdd8YVn" class="lv lock" title="未解锁"><!--pnid:vJZTwm3NjxrW2KEvMjez19-->57</div><div data-page-node-id="v6SYWEmK3MKjh2HWl2SHW3" class="lv lock" title="未解锁"><!--pnid:8j0jSVoxiJyo34oEO44lKO-->58</div><div data-page-node-id="iObQhOgFIUxbriDB2pLKjH" class="lv lock" title="未解锁"><!--pnid:MCHPQYnwr6PtnXZ2HCxeAz-->59</div><div data-page-node-id="I7ctR9FKJpwsawoO0eEm44" class="lv lock" title="未解锁"><!--pnid:bvcGcSGqhcLus3ijA6VAzM-->60</div><div data-page-node-id="WAPuhel5bBD8nWAb7CrcVj" class="lv lock" title="未解锁"><!--pnid:iPSJO1Rb7xv22bPzJFEwet-->61</div><div data-page-node-id="rPBKKldugIkUFEXHCWns5A" class="lv lock" title="未解锁"><!--pnid:XokoiaANoYpST8BkrXj9r4-->62</div><div data-page-node-id="NymWpt6yzFEwDLZg1tNYLl" class="lv lock" title="未解锁"><!--pnid:syfJL3WuJWJgMJtgEvKFV2-->63</div><div data-page-node-id="m6xC7A4IqR0jb5frZMP2C9" class="lv lock" title="未解锁"><!--pnid:SImQgd3voogNQliBHLYV3I-->64</div><div data-page-node-id="aXEdWS4iy7T4nfiPeoWtJX" class="lv lock" title="未解锁"><!--pnid:gGiTAspB7TdHHlJL6wbZMC-->65</div><div data-page-node-id="zEprUGR1o36bY9hc9uIlEY" class="lv lock" title="未解锁"><!--pnid:1nvzT5t8vq0RTv1Vubhxb2-->66</div><div data-page-node-id="w4hVPRBKOdWN4lIDixEZhK" class="lv lock" title="未解锁"><!--pnid:fHTvaNini4L1InCQu2mLjA-->67</div><div data-page-node-id="qUAIl6viiIu9VJbPDHOuOM" class="lv lock" title="未解锁"><!--pnid:rSrxcXZmzsXvSL1k0je1dT-->68</div><div data-page-node-id="LlzFJklyK15RnKgTgWEo4S" class="lv lock" title="未解锁"><!--pnid:2bqiA68QTEs00T6cS534Ag-->69</div><div data-page-node-id="NOhMLAf6sAxM44Bm9VGNhp" class="lv lock" title="未解锁"><!--pnid:DwBedkbv93ZbDlcMDyVeGK-->70</div><div data-page-node-id="wGaVrch5bfcbcC2ZQoMpay" class="lv lock" title="未解锁"><!--pnid:7oL5jhKNMuvpZjumRhO9u0-->71</div><div data-page-node-id="VW6FGjOO3lbIYRFOxatxy0" class="lv lock" title="未解锁"><!--pnid:X81V6xWLAqohgrkyhsfa1d-->72</div><div data-page-node-id="AprNCdkfBkXqWXZPR8SkB3" class="lv lock" title="未解锁"><!--pnid:Jz9ZWblo0HS3d4rCFtGCT6-->73</div><div data-page-node-id="2vsqnIJ6bIHZw5FXiBC8a7" class="lv lock" title="未解锁"><!--pnid:KUfA73nxV3LHfoH5ApijQ0-->74</div><div data-page-node-id="ovMWtRwThBfwYcypiirguH" class="lv lock" title="未解锁"><!--pnid:SaqgQCWw0MLBZeC2l7ys6E-->75</div><div data-page-node-id="3nHtcN7kjIBV35cPZf4Lwg" class="lv lock" title="未解锁"><!--pnid:Vv3q79XBxPeGcAAkL7G1Va-->76</div><div data-page-node-id="bVy2doqSIrQlhlbFDyrt77" class="lv lock" title="未解锁"><!--pnid:sQYHqSdIHhujwemtEGMple-->77</div><div data-page-node-id="IBnAwl1BZnWiXXwIlGOSU8" class="lv lock" title="未解锁"><!--pnid:KW5o3XBiOxt2A3Gh1z05qz-->78</div><div data-page-node-id="cZ0D1ElKpkd5vaUndDGuhg" class="lv lock" title="未解锁"><!--pnid:jwlFVgsS55lPu2AaMaebQ7-->79</div><div data-page-node-id="yoJSj3Kw88YsNWN2qK6agS" class="lv lock" title="未解锁"><!--pnid:4vYsAJT2ilVhOU2S4JA9He-->80</div><div data-page-node-id="pPXugID9gF1XNb0NVKRpAp" class="lv lock" title="未解锁"><!--pnid:metz57wsGsmG1d9dF9Av0S-->81</div><div data-page-node-id="HFPNr63koKxCSZm6C203bW" class="lv lock" title="未解锁"><!--pnid:IczzCESE18u7IIFnStlgwF-->82</div><div data-page-node-id="p2RsvpgQUGRWQ4Q8VHZtOK" class="lv lock" title="未解锁"><!--pnid:sPFu0MROfjxRaFNTTHCiv1-->83</div><div data-page-node-id="cQpeT4PaOeqcDlgwzCHUfm" class="lv lock" title="未解锁"><!--pnid:OSuIkbBx89Q2hMmuMNZ2YP-->84</div><div data-page-node-id="MOmyzmJIN4mt0QGllPXfuG" class="lv lock" title="未解锁"><!--pnid:4ljHIgcOxtiJXwh6Ix1U5l-->85</div><div data-page-node-id="Z5sIwNTXyEiJ0MT6lkZn74" class="lv lock" title="未解锁"><!--pnid:dECvKib32fMYhzAERx2dCN-->86</div><div data-page-node-id="liPiEN6jJqwHq5FUowm3i4" class="lv lock" title="未解锁"><!--pnid:7vj8ZOHTkLmJBnTzhzTW9C-->87</div><div data-page-node-id="zHPWF4ZB3BljiX70A0jWhA" class="lv lock" title="未解锁"><!--pnid:rc9WJ187ebf61qY28pylwu-->88</div><div data-page-node-id="VMcVu4dNZVGAgGpcD5x3yx" class="lv lock" title="未解锁"><!--pnid:VmROS2Nrh0SGPTg2Rvnj2N-->89</div><div data-page-node-id="0ohzkKYR7n3L5wKUhyMiHE" class="lv lock" title="未解锁"><!--pnid:wR14w9nNxR57uc5t8Iz1Tb-->90</div><div data-page-node-id="KVPGZJdJTHi1k3zouESY6d" class="lv lock" title="未解锁"><!--pnid:pNRNXD9JznifDsj5Ub2Jhz-->91</div><div data-page-node-id="uSRg1vTUaCXbcChqV95otS" class="lv lock" title="未解锁"><!--pnid:hgGvsRoWFVIpQQMR5m7RTS-->92</div><div data-page-node-id="CJ91EEvUEx7x4dOhkEDCKj" class="lv lock" title="未解锁"><!--pnid:kR2vYBgkLYRKHkSj8nFGWA-->93</div><div data-page-node-id="FGJzq4Rm7CJlw4P7zra9Fm" class="lv lock" title="未解锁"><!--pnid:M2VaJyO8Ejbhdr1bChb4gG-->94</div><div data-page-node-id="LoZCcPN7ITsgJMEWVtKEK2" class="lv lock" title="未解锁"><!--pnid:GXu8ENcrtkgIxsJlSUwC5q-->95</div><div data-page-node-id="gfWcOphANvSWbK4eeB4B0s" class="lv lock" title="未解锁"><!--pnid:ETRSeZtsZcyQOhE3XKVwPJ-->96</div><div data-page-node-id="HgGM5xZH2Mka7N8TTil4ma" class="lv lock" title="未解锁"><!--pnid:l8IMSXBxHcjEp2lo7oAiOv-->97</div><div data-page-node-id="h57ssGtafXhhqU5Jv3dFRT" class="lv lock" title="未解锁"><!--pnid:GBrz0iXllAYQjQozeMhTBz-->98</div><div data-page-node-id="rhtQX2oRGJ9C410mzvDPel" class="lv lock" title="未解锁"><!--pnid:XDXVAFGOO6wMi92xRAqcvd-->99</div><div data-page-node-id="FeP6TmS8CvDI4YyBaN8otI" class="lv lock" title="未解锁"><!--pnid:wCWi41Xsz7bYq6y6TF7Kh7-->100</div></div>
+      <div data-page-node-id="3eoNcVAzBUYiwTg6tuZUZu" class="unlock">
+        <button data-page-node-id="rroxNQdUjt5XbVeqbEdwL2" class="sm" data-i18n="select.unlock" id="btn-unlock-all"><!--pnid:NNaDpI6snyjaFLleCA3CTm-->解锁所有关卡</button>
+        <div data-page-node-id="rf8y5RgZFFEETNNHEtdgXH" class="unlock-form hidden" id="unlock-form">
+          <input data-page-node-id="0gbLji3xt3gHylwyVP91L7" autocomplete="off" data-i18n-ph="select.pwPlaceholder" id="unlock-pw" maxlength="32" placeholder="密码" type="password">
+          <button data-page-node-id="1x6HI3mUZhvfleklqB3DIK" class="primary sm" data-i18n="select.confirm" id="btn-unlock-ok"><!--pnid:yyIS2FbhxSEYRP0sFM8ij4-->确认</button>
+          <button data-page-node-id="SYDvH4XoKXxim1Uqe2jEKP" class="sm" data-i18n="select.cancel" id="btn-unlock-cancel"><!--pnid:W8mcIysMhAP1B6oZCOLAEA-->取消</button>
+        </div>
+        <div data-page-node-id="tN1zAhT7opzqRVHKr7VfjI" class="set-tip" id="unlock-msg" style="color:#ffd23f"></div>
+      </div>
+      <div data-page-node-id="2zw164XRrddni7jjDisYH0" class="row">
+        <button data-page-node-id="0upZFadCJ2wBiJPf6eHTDi" class="primary" data-i18n="select.back" id="btn-select-close"><!--pnid:DmvJvMcn2ZXQAAlMspDBMq-->返回</button>
+        <button data-page-node-id="a33VBIn83pZTO9flWsaKfz" data-i18n="select.home" id="btn-select-home"><!--pnid:1r70XxS7cxcYz1pIoAAA0Z-->主页</button>
+        <button data-page-node-id="VQ8ckh1Xucfd6Mz7cuPIPG" data-i18n="select.reset" id="btn-reset"><!--pnid:Bq6EjrjtlCHgAw1tTkNArR-->重置进度</button>
+      </div>
+    </div>
+
+    <!--pnid:MUG0j9p5GievGjkdsHASET--><!-- 无尽模式：开始页 -->
+    <div data-page-node-id="NSimelaNxuE67CkcnS7TYm" class="overlay hidden" id="ov-endless">
+      <h2 data-page-node-id="gL1lP3X4kLAlW99YManyDX" data-i18n="endless.title"><!--pnid:SqrGG87BPak3DUkWfVbwuF-->无尽模式</h2>
+      <p data-page-node-id="ZG7p6A407ISjLvMyzzbSKH" data-i18n-html="endless.desc"><!--pnid:EKE3GvGHAfb0bznflyiHQ5-->一整张没有尽头的长地图，一直往右，永远没有下一关。<br data-page-node-id="QnApabTAgbaRebpZOjp5yH"><!--pnid:H8v1sYnCxhbeBq2SFAkVH6-->越往前跑危险越密，死一次就结束这一局，看看你能跑多远。</p>
+      <div data-page-node-id="zhafssNTINFFBoqVgPDPQk" class="stat-line" id="endless-stat"><span data-page-node-id="2ePlcU4xg1LGvMJPfHrzHx"><!--pnid:vhvnN18Ljyp8zXxsBUVt17-->上次分数 <b data-page-node-id="5DBGn8oSkNOVwOlF4bbcxP"><!--pnid:aPH8aHTXhcqa5VKGIIHrxG-->0</b></span><span data-page-node-id="fisvv6z18J2yxwBVhJQhr7"><!--pnid:Kc37FxwIypHo6v5g1YEcTA-->最高分数 <b data-page-node-id="I7unCbaVdjtX6J9Tzpenvd"><!--pnid:93qdLeYXJZJ7aoOfhPq43c-->0</b></span><span data-page-node-id="7UdUwF18j2BK6wYYSGedsU"><!--pnid:KN6jNUl0IH0aeIk3OXAUeD-->最远距离 <b data-page-node-id="SWJNQdA1RocKF6w8PlwnRB"><!--pnid:gVQp1zJfhXdJe0YKqsHQtK-->0 m</b></span><span data-page-node-id="wJuh5VbZ4PKWDPQXNkYtPf"><!--pnid:HKg8Gbu1RIupa0KIPJteIA-->已玩局数 <b data-page-node-id="sHC3bR86oTbhZT922QLKO8"><!--pnid:AFXUYuQrxhM9pKrFYLbDqF-->0</b></span></div>
+      <div data-page-node-id="gSx6dHkDC2uX45V2g9J0oC" class="row">
+        <button data-page-node-id="9VVE5SPZxCGKQaVe8gtEd8" class="primary" data-i18n="endless.play" id="btn-endless-play"><!--pnid:WXoR3pPKAnKzOAgqVPLQLP-->开始无尽模式</button>
+        <button data-page-node-id="pWAVXBr62s8NnqBtmLnt8W" data-i18n="endless.home" id="btn-endless-home"><!--pnid:6T3FclYZ0bqZb7c9NWKwqU-->返回主页</button>
+      </div>
+    </div>
+
+    <!--pnid:M1vN8Hzxefpg0vuTAdSZLD--><!-- 无尽模式：本局结束 -->
+    <div data-page-node-id="GQPQKTzO2p6yO4i76R2490" class="overlay hidden" id="ov-endless-over">
+      <h2 data-page-node-id="8H1PzU0BFRQpLf7XqQK1Tl" id="endless-over-title"></h2>
+      <div data-page-node-id="IDEUvL3Tfi2yN7FXrvc2GN" class="stat-line" id="endless-over-stat"></div>
+      <p data-page-node-id="W0C3ZXraYOtA4LXgE1gpzG" id="endless-over-tip"></p>
+      <div data-page-node-id="haRnqMtVdUwJtX5gS7wadm" class="row">
+        <button data-page-node-id="jGjfmOoXKSnyDxo4TVNhZ7" class="primary" data-i18n="endless.again" id="btn-endless-again"><!--pnid:L1Eb2KMSr5xCPDAodxP2AB-->再来一局</button>
+        <button data-page-node-id="l0UuyUtUIDn4PzoVcHk0Jf" data-i18n="endless.home" id="btn-endless-over-home"><!--pnid:VEVdWg6AWJoKl1vMxJnsMD-->返回主页</button>
+      </div>
+    </div>
+
+    <!--pnid:EBSuRTHditEETZ9CsZF2Kx--><!-- 枪战模式（三个子入口 + 枪械解锁） -->
+    <div data-page-node-id="2qxd2LW3ZKG9FUp0osm4lW" class="overlay hidden" id="ov-gun">
+      <h2 data-page-node-id="DeN0M46M9g7uBbQdqaXLa5" data-i18n="gun.title"><!--pnid:3uBO4LrIvs7ZC13LFvitcg-->枪战模式</h2>
+      <p data-page-node-id="0oMEzBpYXqLFMA81wNiVtO" data-i18n-html="gun.desc"><!--pnid:bbi155Eebd6rvgN9HGuJA9-->小人在这个模式下<b data-page-node-id="6VGwabkFOkDEtOmUaO6djI"><!--pnid:1VmNwtybl0SbIabYVbzgbc-->持枪</b><!--pnid:YEq7mYSDTtpqgyNMpjcDbi-->：枪械没有自动瞄准，<b data-page-node-id="bWrByZ2fmXsSOQUXnQ1M3m"><!--pnid:ZHRkeOKZaHrpDg58KqwnaB-->统一平射</b><!--pnid:jY9Skhe3CMbzxupEoKy4D6--> —— 想打到高台或掩体后的人，得跳起来打。<br data-page-node-id="NQmvocB7uP1UgMEfhAoU39"><!--pnid:vjpvv44pfMmY6eNd5k7LRp-->共三种玩法：<b data-page-node-id="J1WzezH5h2oiHyuaVBNjiz"><!--pnid:IYyox986M0xtPAoP0WpSGh-->枪战关卡</b><!--pnid:Qbs2ANtUA9VnQzLRo0AuKr-->（150 关，人机越来越强）、<b data-page-node-id="rW2nJX2ZdzJpSx1c14umFU"><!--pnid:KBxggdkCbiT5kQ5HhqDSTN-->枪战无尽</b><!--pnid:d45JM1iq812GR9PKIxI17L-->（没有终点）、<b data-page-node-id="0kNNmJqJnBMXMzYHmaMONF"><!--pnid:hMfpTZfkLz3t4GpdDqxclc-->双人对枪</b><!--pnid:qOgxMbZlNKWuXwQGWEmzoR-->（回合制对枪）。<br data-page-node-id="PNWIhfIF021kro93RQe5lh"><!--pnid:IvOfPngR1FkB3zfDGhTTbn-->地图里有<b data-page-node-id="yo3esizDRML4W1CD2p5y47"><!--pnid:6gIf5pTJPeJZuCv3WcXt7P-->回血装置</b><!--pnid:PYq7nA3nTUOgbXc4iZQbQD-->、<b data-page-node-id="0cwC1XPJswdQEq84zPTCLu"><!--pnid:kdXhAjPbq9MUJa9wOPgD7V-->可打碎的木箱</b><!--pnid:LnYM1yeSCHYeMehz8GyAcs-->（有机会掉双倍 / 三倍射速与弹药）和<b data-page-node-id="hRikK9RgdAmtmpvu5xaHEo"><!--pnid:Mw6a4P6XPjeDo8HnFMwTq3-->高台</b><!--pnid:tAlItcYSxInlnBFVH1fINw-->。</p>
+      <div data-page-node-id="uO7v5b33KrCkF0CRgPg4mQ" class="stat-line" id="gun-stat"><span data-page-node-id="xfR7afxmbcgbIZnq2ZpwZV"><!--pnid:5039X5D0SLDIhpUlDqI2nq-->已通关 <b data-page-node-id="YSSbS4OBXKvOpSyPdG0IOH"><!--pnid:Kz8s2ajjaXItWZVm4qnrvI-->0/150</b></span><span data-page-node-id="2Twe13vY4s4YWzI3MJ6eQw"><!--pnid:V2Um0rROApMCGO2rsm3tzC-->最远关卡 <b data-page-node-id="fUJ49KXe87Hb4KU3aPVUqk"><!--pnid:XQ8IZWgTnzuz2p7KI9pj2V-->0</b></span><span data-page-node-id="b638h9xEjCNgERriicMbvN"><!--pnid:BRt0u7Zy3jVziKrDsSivqZ-->总得分 <b data-page-node-id="giESP41G0eISIMouHlFkPK"><!--pnid:EzO56pqa1sjVs1ZxJ3PUI9-->0</b></span><span data-page-node-id="pSj53zzId7RIhr5fllyEYB"><!--pnid:CLcj7Url3plCyaJXAI7fmQ-->击杀 <b data-page-node-id="POm8RrNBbs2s4cCNW3kWfN"><!--pnid:gbysah2UnQXoR9PQbNdzJ8-->0</b></span></div>
+      <div data-page-node-id="Ix99dk6zSAEWNAC7hQ5M4Y" class="grid-select" id="gun-grid"><div data-page-node-id="Q57O3extGPmOJASN7KecKK" class="lv cur"><!--pnid:5mPeSjZeihsBNodk3f0UhZ-->1</div><div data-page-node-id="vK73qToQNbEmRpVgSM486B" class="lv lock"><!--pnid:0Sjyd4Ip5doDU8noDfeEa6-->2</div><div data-page-node-id="ssIExaiNyqZ6L4xCMfYvAM" class="lv lock"><!--pnid:YqvT29YUud5FVk18CZcXMK-->3</div><div data-page-node-id="pn6iwU736rx7Vx1qv8G5Sx" class="lv lock"><!--pnid:kOLaexk7OPOTFrj6UzZd37-->4</div><div data-page-node-id="Q9dT9tCZ7Doxa6ADBQ16Pe" class="lv lock"><!--pnid:6asMIc4oPDd1ROgXBJ7VNW-->5</div><div data-page-node-id="uGxHySWBMbigLcRzrC2w8a" class="lv lock"><!--pnid:Wxq7IbEPCqWwVADVX3KLui-->6</div><div data-page-node-id="VtHXdp6fSHcGlcVhVv1zC3" class="lv lock"><!--pnid:ZwQE0AsO6NUaawxduGtar6-->7</div><div data-page-node-id="vCDy7wBmDpAvDzwV8EdlCM" class="lv lock"><!--pnid:VDFnVszvCSVqFlLuOB7RTy-->8</div><div data-page-node-id="e75LPRuuraafybUUdHSP7p" class="lv lock"><!--pnid:OTV4wRjWC0tDWyUgLLiAqS-->9</div><div data-page-node-id="FBw58hnRkgXqovs52dfRPw" class="lv lock"><!--pnid:8Qlz9zKoICnWzdcQjHTmef-->10</div><div data-page-node-id="q3jCBHT8BNSajRr7xPcOyZ" class="lv lock"><!--pnid:1uhVIJSynSJkDXckdu5k1c-->11</div><div data-page-node-id="TZQ834XNFnsfUJsxdzClEU" class="lv lock"><!--pnid:E2xOKpDrWKkFbTYEX5BXF9-->12</div><div data-page-node-id="jwTcknVMCUyw7XtlnWJD3A" class="lv lock"><!--pnid:WBWG5x4ATmNkPFjMq49Cb9-->13</div><div data-page-node-id="oYmVhXrrC0jaZQtPJPICcZ" class="lv lock"><!--pnid:8cjrGXLMtYbNJGuSv2NeV0-->14</div><div data-page-node-id="CsCZE1gGXCQ9VAAZcl46s2" class="lv lock"><!--pnid:UBosjp6wNIGwuvRbuLgu0R-->15</div><div data-page-node-id="w8CvbbfeUN7I9XZDeIvV29" class="lv lock"><!--pnid:hmZJUFFHAa0csfjsO4KMGp-->16</div><div data-page-node-id="tstG7sDFJBno6Xy37annkg" class="lv lock"><!--pnid:7Ynn1BraCXLEuSfGuNwHDK-->17</div><div data-page-node-id="ZONC9f2KzLUM7CybPiaXYN" class="lv lock"><!--pnid:U76ROuGXc90thuPt5fvTDx-->18</div><div data-page-node-id="M1eEcUKPI10eqpAFADvbP6" class="lv lock"><!--pnid:qgRVHNlEl3446tblgqE9kQ-->19</div><div data-page-node-id="FveeTYhiX3ITrsF5xzvtrJ" class="lv lock"><!--pnid:AWZLzc7S9I40eVVmIaRuzc-->20</div><div data-page-node-id="dZnZIZRagQDKhVVRtZZEhR" class="lv lock"><!--pnid:j97AaKI0tk9A0sqwlnH8kX-->21</div><div data-page-node-id="6pJwyE0EwgGxzgk44U7MuB" class="lv lock"><!--pnid:Wo41zbiccA40CVkqrZmchA-->22</div><div data-page-node-id="Gwpx5hTfRKlM6RmhcFmXq2" class="lv lock"><!--pnid:rygAKALclvo3qFuwlr4bAX-->23</div><div data-page-node-id="FCC6Qnzy5sOKql7L6MyhgH" class="lv lock"><!--pnid:RMpeKArGeacc6Yw0kMQLGX-->24</div><div data-page-node-id="fWc63zHe1UGrNrlEYOdfTe" class="lv lock"><!--pnid:D8f807Xj6lSYURKi7vjVY8-->25</div><div data-page-node-id="cwP65yAhLPkqXliJxBi2U9" class="lv lock"><!--pnid:6BCdq1wmfvMFkVmECGblAE-->26</div><div data-page-node-id="5rPGLid3QnBcpzjU4cIt34" class="lv lock"><!--pnid:LKdgpM5umuB4JKEsbxp2WD-->27</div><div data-page-node-id="c5LiYvKjleoGyzRQtlcNWU" class="lv lock"><!--pnid:wMApsvdHoskQXjG49sh2RD-->28</div><div data-page-node-id="huqoQIcZKaXaSYWwViiIty" class="lv lock"><!--pnid:mXyqytoVsvgTloRWr71abx-->29</div><div data-page-node-id="f8wdSGibFoYiZ3IWG1acAe" class="lv lock"><!--pnid:cyzcOgDqBZt3tDLsgADrtS-->30</div><div data-page-node-id="Azgoc8uipqvqiX3MBoGNSK" class="lv lock"><!--pnid:PZJZxgZZ7vdr6mg66EfER3-->31</div><div data-page-node-id="OlFRa5h5ERULW6bD8GBmSx" class="lv lock"><!--pnid:7PxjvNm7bFOv9a4d7Is8Kc-->32</div><div data-page-node-id="OV9QwXp1zH2Gcsr9TvrpwH" class="lv lock"><!--pnid:YCTXyXlmcmPgEHktBJtyZI-->33</div><div data-page-node-id="x81uzU1pQd4QtliHla64Sk" class="lv lock"><!--pnid:xaqhKtrPjE06yqG9aBrxwu-->34</div><div data-page-node-id="bkY3wqMOLQ5eJd9yLpKvyf" class="lv lock"><!--pnid:SVrgsK9DkA2JKf7q4KUaHU-->35</div><div data-page-node-id="U6GpZiPOb7ExbeSmNkaHWG" class="lv lock"><!--pnid:ohofXHATFlv2QnsCLrfuHn-->36</div><div data-page-node-id="RUXNkm65xgickv4YlwCmOM" class="lv lock"><!--pnid:Ja2levZ4jeOptfMLN1G6GZ-->37</div><div data-page-node-id="CoHXsmNwYVJiAZFuzPypM3" class="lv lock"><!--pnid:wa1QqmUQkv47CbHq5yffHs-->38</div><div data-page-node-id="NJ0n9G35bfwybVbi9cFQ8V" class="lv lock"><!--pnid:gHpsEmaKfKrX2pDOa8vEDD-->39</div><div data-page-node-id="WQKqqVRXKxXKRm1Sue9sPn" class="lv lock"><!--pnid:nOsSjVPYAPlv4jMuSMQrdc-->40</div><div data-page-node-id="twVbmAk7JcmTxGTqQ9Clq7" class="lv lock"><!--pnid:ZhaHnpjqtTEjYFJrJwbtZT-->41</div><div data-page-node-id="OzZYH5XhX2fzwe0Fqv13D7" class="lv lock"><!--pnid:LR7IT6Vr5cZqLDGLHNpbvA-->42</div><div data-page-node-id="9dZeqULG0p74AfcQzl7gKS" class="lv lock"><!--pnid:7cAkMdgVCFfBLkmhiUr7dC-->43</div><div data-page-node-id="Y1IooDOHv6OljXRV3OGoS6" class="lv lock"><!--pnid:kgJYBnq1UczK8pFoP0AM6j-->44</div><div data-page-node-id="mgXB8MS24ro5ZkXd9ZoTsh" class="lv lock"><!--pnid:etGZ333l2MOIwoNs020wAD-->45</div><div data-page-node-id="INWBoKMrK4iS8f9L6N7gQN" class="lv lock"><!--pnid:Qilwu2TVOjXlPFoaqXyphJ-->46</div><div data-page-node-id="ojCDozZbzLmiL6gvPMNjCH" class="lv lock"><!--pnid:k0piFVuqYq7qza8nw4qzL7-->47</div><div data-page-node-id="2Tt0L8ldmoKfECUunoGD3F" class="lv lock"><!--pnid:1MbiNkje3kH9RKyZpUOSaL-->48</div><div data-page-node-id="D4YL8WvvmN2Xtaxa0J7YII" class="lv lock"><!--pnid:rhr6jbGb6X2UeVVUCO8ERv-->49</div><div data-page-node-id="Q0zGy04NFQRfJmzovJCOko" class="lv lock"><!--pnid:afy4ptDMoCv6CJKFbvZQ8F-->50</div><div data-page-node-id="MAz6mFzcN3GoAOqatfNxvP" class="lv lock"><!--pnid:dT7Qgm2ab1wTIoAUPTNgYr-->51</div><div data-page-node-id="RtpRFwbG8y2CSHAhdXS0PH" class="lv lock"><!--pnid:C7XKdPJzfOdELpzzsljsvW-->52</div><div data-page-node-id="K3jleOid8Zgjh9HqCSSeXA" class="lv lock"><!--pnid:5UP7C1jwwa9Z95WxSYOIrX-->53</div><div data-page-node-id="wKOihUTLTAcFTvwRMBv8mU" class="lv lock"><!--pnid:73pQhIdxucJSbGR9WVMRVX-->54</div><div data-page-node-id="alIhahTkXt2vpaG9O2Kt3I" class="lv lock"><!--pnid:oe9q8FivrPvUmkPpZwiKDJ-->55</div><div data-page-node-id="tnmOkZ78gZjqQWenOQwOfn" class="lv lock"><!--pnid:5JGwQYkx64ljPD9zlXavQi-->56</div><div data-page-node-id="VgRG6ziW3u42zv5Qppf6wX" class="lv lock"><!--pnid:dtD4nHFg3vZI4GYtF25TDc-->57</div><div data-page-node-id="dcFrXrLPlRKKcx6YEtrqfB" class="lv lock"><!--pnid:i3LGhDXaZgSBjrFy7BIgjN-->58</div><div data-page-node-id="WMctafFCIrnUJnjuOx4Ygr" class="lv lock"><!--pnid:QnxKvZGl1duQsO14nyEHkP-->59</div><div data-page-node-id="0BHLvfFmEVPxGPkpPh30pj" class="lv lock"><!--pnid:vCWfB0RYA7iJf6NQk0OoM2-->60</div><div data-page-node-id="zei7iD5iMNvx4SHgAq9atQ" class="lv lock"><!--pnid:evGTIglmpynmpoPjDaszp6-->61</div><div data-page-node-id="XGjALwtyYcIycUzI3WLlaH" class="lv lock"><!--pnid:CdN6ipZ8AFiZr9Ii68EVOy-->62</div><div data-page-node-id="UVTxc8TrgXWmiFTs73P6zK" class="lv lock"><!--pnid:ZFI2AG19U1HUUF32Uq1nWl-->63</div><div data-page-node-id="NKRhbFUWpAviVbIOR99bWN" class="lv lock"><!--pnid:c2PpQNNa4JRnRBG45NqOkd-->64</div><div data-page-node-id="3eYUnOaOdZccclHQrN6V02" class="lv lock"><!--pnid:UUym0EU6SF3eeFqBa5oqF7-->65</div><div data-page-node-id="lt3ZNdzXnyBosOXQgDF1qC" class="lv lock"><!--pnid:IoRTD2sy33VSAYMErYCemT-->66</div><div data-page-node-id="s7fis9qcXOQTM517UStsQl" class="lv lock"><!--pnid:pXtiab1jhrTaeLrtQXkgxA-->67</div><div data-page-node-id="nL7P2On5ahxtrGgs2Yncfw" class="lv lock"><!--pnid:BrVOGmqR6mWDiasJ2SEGXI-->68</div><div data-page-node-id="tG76kXSaLFgdExVXs3iS5b" class="lv lock"><!--pnid:Qz1xILZ0gAQQ3XxJq6L5AB-->69</div><div data-page-node-id="naAzJcAMR59jXqgK7NRa8t" class="lv lock"><!--pnid:aWJuysZU0ZaVNOJdUgStWJ-->70</div><div data-page-node-id="mRhCnAVMJm64KvR0qGPE0o" class="lv lock"><!--pnid:F6P0wNECGB88jQQmxFYKFa-->71</div><div data-page-node-id="sekRAoD9IBHe6hx8cMd9xU" class="lv lock"><!--pnid:1VeCa3kop248itppK2S0fq-->72</div><div data-page-node-id="u2cbIDTrk9bZzeJybWGQiH" class="lv lock"><!--pnid:h7Gh6jcrftZt8ii5UhzWmw-->73</div><div data-page-node-id="uxre0ibIjHu70DYjeL2EtD" class="lv lock"><!--pnid:6OcR9xGvDlY3MWhJIE8Uy2-->74</div><div data-page-node-id="LSuycFSzQgY9u1M1TrFHZa" class="lv lock"><!--pnid:29dXlGUKtClS3vJXMYWhqN-->75</div><div data-page-node-id="gwcbKsTO7fiYc5ql0pCIOF" class="lv lock"><!--pnid:i8MqM5uFxVKOjMPMkRxUDL-->76</div><div data-page-node-id="yQEswX3hyj3bvz6dA6AtPR" class="lv lock"><!--pnid:n78HI0sGhWpBYLNOMfU5ko-->77</div><div data-page-node-id="DGHhRuWP88wRKkmENkK1pH" class="lv lock"><!--pnid:1r3Ipgg5NqxSFa0uGuPWHN-->78</div><div data-page-node-id="COoaeykR4l4gtgehrMQ2sZ" class="lv lock"><!--pnid:rlQhkBeblGCT3ZXazfRP5I-->79</div><div data-page-node-id="iNsaKmcO5stRjwXnEYqUH2" class="lv lock"><!--pnid:bZgw3N4bojukLljv7ETvGD-->80</div><div data-page-node-id="0kO38sdjzpo4ATBtWElkMb" class="lv lock"><!--pnid:JIws7QqJU3L1KuZ3oPtF8M-->81</div><div data-page-node-id="POMlAIMgaLFYypIxyOW2jC" class="lv lock"><!--pnid:FZYpXKrYdRndQ7PjWu3UVZ-->82</div><div data-page-node-id="gH4zGml82GjgXFVYzzQryG" class="lv lock"><!--pnid:c4lq1pEq18k4QU4Y6Vw3oA-->83</div><div data-page-node-id="UGStmZXHkKnsUHYGIIvqTv" class="lv lock"><!--pnid:r0rQL0CcSY2go83oedDqfe-->84</div><div data-page-node-id="fsNMCum9ARxrEvwskjEc2r" class="lv lock"><!--pnid:7C9YoY1yFnP9jbxk8odH4F-->85</div><div data-page-node-id="zq3FlcaiixoZTgYMztIf4U" class="lv lock"><!--pnid:Gqal6KlNu7zgyk0KPfJ1AO-->86</div><div data-page-node-id="lXVWzPY0amSxXF1sgJidId" class="lv lock"><!--pnid:NaCbyiZN90duubD42nyxVw-->87</div><div data-page-node-id="McuYY8HZZgZfBTGv6kI0hq" class="lv lock"><!--pnid:TQKbA78wBd5BNN0jm6699m-->88</div><div data-page-node-id="kdomRbZy1XQvP20Cz3lzSK" class="lv lock"><!--pnid:MfdDuA3qjD5ZOyzNn8gTbF-->89</div><div data-page-node-id="lMU4Bfh5Gkmr6Y87gdAVIy" class="lv lock"><!--pnid:Teow2tdFg9MsumOwpH4fEa-->90</div><div data-page-node-id="qfEm0DgziSF0Zul8zae5Ah" class="lv lock"><!--pnid:2tEX6czE4QjEYZAwL9qGCG-->91</div><div data-page-node-id="4fWwQ33EF3PxUgx6cemUQ2" class="lv lock"><!--pnid:HQuVdiavr3BudFmvJIldKu-->92</div><div data-page-node-id="9jmoNUmeQFwpkjUPfDLwf6" class="lv lock"><!--pnid:oVGKGgdAtP3COvwbvglcxa-->93</div><div data-page-node-id="2OBmi1YM4DdgMx2fD9xGcy" class="lv lock"><!--pnid:RRPk9wktLcxzIbufEy8Oe3-->94</div><div data-page-node-id="FUdIyfJ8JBrXdPoVT2Lf61" class="lv lock"><!--pnid:PXFHDEeu5RWVyZOeWFJkkb-->95</div><div data-page-node-id="MYwyPvYOKmuoi9GyM3mtej" class="lv lock"><!--pnid:HYshfMdxLzhazAlM1YfrE8-->96</div><div data-page-node-id="uRBxnB7l45rwMVUPNMc4ig" class="lv lock"><!--pnid:kYWIqTFuA5zXVIZkvZcOHs-->97</div><div data-page-node-id="lHy1Fm31k3bwnHlRaeHilq" class="lv lock"><!--pnid:HWY4lmAlyPpOD4POVrYzek-->98</div><div data-page-node-id="ScMYwfG4aP7wapL64fAvv0" class="lv lock"><!--pnid:JjdPY6ZCHPYktNJYGkpImI-->99</div><div data-page-node-id="vVVh8rzKxZUB2N2cWbUlm0" class="lv lock"><!--pnid:AeGgWMgdjwI6hfi5km9Fwh-->100</div><div data-page-node-id="h2HD1lTLMU1GNN9xxqKH7P" class="lv lock"><!--pnid:inyx0XOUUzIzd68kI7CAlk-->101</div><div data-page-node-id="CwgRfGxkefBuJ0yoIqUBgY" class="lv lock"><!--pnid:e8ilFKi8kwn3c6NdGtCzpc-->102</div><div data-page-node-id="xVb79GpX8FZgkT0wVWuU3J" class="lv lock"><!--pnid:fR1FLbYBaMgyPGAqH82ysv-->103</div><div data-page-node-id="A6znhpPJ8ORkDCKyH7Kdud" class="lv lock"><!--pnid:KgVCthiFWtGlml7l3XauS4-->104</div><div data-page-node-id="Ris5yxVSWQAtsfDOWAqQfK" class="lv lock"><!--pnid:uld9uTwQDPQ3cfCsnDE3eP-->105</div><div data-page-node-id="vylQUbnYRzVMlprbMPtA5P" class="lv lock"><!--pnid:S4zPeVDIVinJ1O4flg63c6-->106</div><div data-page-node-id="KjaByfCa445AmSTWffG3Md" class="lv lock"><!--pnid:uXSYEghWAw389QoEZMtULe-->107</div><div data-page-node-id="FIvG6l4nyG1bfqBTejyLFv" class="lv lock"><!--pnid:ptxEljWF4Jc1sAHW6dzEiD-->108</div><div data-page-node-id="Yj2wRWLxLgUZFy8eZABnG3" class="lv lock"><!--pnid:ooqKMqKYPiC93xwaoyuQpV-->109</div><div data-page-node-id="qhYawtuu2Zv5cQdOnEAjaD" class="lv lock"><!--pnid:iQdYGPYv8PvQzLc3hvLnDO-->110</div><div data-page-node-id="5AgELsdlhE3qDPtp5JjYdG" class="lv lock"><!--pnid:4PHqpjTjqNxrI17f4C53w8-->111</div><div data-page-node-id="kuAd6JBRdL3PK6y5RlecCq" class="lv lock"><!--pnid:jL9dKOd0Aoib19sxA88BeM-->112</div><div data-page-node-id="YXQBs44woTHWjw4bwXCnRH" class="lv lock"><!--pnid:6TW4C28BCWUVam4ATZjQVl-->113</div><div data-page-node-id="EpAom88CeuVoOLGb3CFOVO" class="lv lock"><!--pnid:wHPgRKBYRDDKPToJYfEyXL-->114</div><div data-page-node-id="qukKY8FDbJ82lW562h1jCP" class="lv lock"><!--pnid:o98novi5MhDSUjFizObrZ8-->115</div><div data-page-node-id="aA1n421aaoC26zlufvEwlM" class="lv lock"><!--pnid:AAcG1QS7nebvgRjZK2i0E7-->116</div><div data-page-node-id="kdVrQahdR4PA4D8BHsAaKs" class="lv lock"><!--pnid:0a6fcukshSXmXur3gcXSlu-->117</div><div data-page-node-id="pU0PKJnTnpQgYEuIkrzXk1" class="lv lock"><!--pnid:svtLDiXi4XK2L7h3Ffi2Kx-->118</div><div data-page-node-id="FwAQQMQFUifTBisKhBzMCC" class="lv lock"><!--pnid:QpHirdwhvHdy0rE6Ett2o3-->119</div><div data-page-node-id="itmFDMJKBCN6YAN6HPJPAt" class="lv lock"><!--pnid:Jsw2aPRUD1EGeVnA1pA31B-->120</div><div data-page-node-id="2jQfeWNn1CuBneRfA67A98" class="lv lock"><!--pnid:sZr3BwA1u58oMTfJi614dI-->121</div><div data-page-node-id="hCNUulzAqsOVuE53XZawGr" class="lv lock"><!--pnid:XNBzgo6OyzrhYAtA1cN7GG-->122</div><div data-page-node-id="VICKRZsOwWWJkOWIMnp7r7" class="lv lock"><!--pnid:biAZ9e3u31bKgtZfrH0Xnx-->123</div><div data-page-node-id="4cbasOzcyf1NjsHyE5U2Ch" class="lv lock"><!--pnid:CfeBYd3UccGQrquFXoTFq1-->124</div><div data-page-node-id="RqmpuxAGn44azRzlkUSxPm" class="lv lock"><!--pnid:NEFFKI42zNhKclMseVMIAw-->125</div><div data-page-node-id="8VaTAMT9nyM2tPNHTW3Mzz" class="lv lock"><!--pnid:Z9o3ZQA5g7YRDkXVsY7ANa-->126</div><div data-page-node-id="eoqkpjt1KxI4hFJ1pGf4Ae" class="lv lock"><!--pnid:TZEllHwh7mHrhg8d8bFgLP-->127</div><div data-page-node-id="3Jk5u2Ltcj2MGUzc6OzbSs" class="lv lock"><!--pnid:RCOobuDU3HUurSguSCJKFt-->128</div><div data-page-node-id="R6SzMG7Tmfx5rd2hlYgzSp" class="lv lock"><!--pnid:0ADXlYHduhhkLXzOzwwoSg-->129</div><div data-page-node-id="CpEqQsMePrMAvcnIdWXRAQ" class="lv lock"><!--pnid:r3PsYopoAPNzAC04HLCvQG-->130</div><div data-page-node-id="pPyPQp5D96Wk7rynBPiTXN" class="lv lock"><!--pnid:mWSXGFUtY7Fh1llW2UHiNg-->131</div><div data-page-node-id="MqDIXb11BcxBTORtvnySED" class="lv lock"><!--pnid:JForTpMcNWwNsfbsp47suC-->132</div><div data-page-node-id="IQaiFr6AU6VUDXUl4XMh7s" class="lv lock"><!--pnid:NSJGhQHeh2BLVZsP4xYDrw-->133</div><div data-page-node-id="hlmT8O5WiSBEYndHTEzo5K" class="lv lock"><!--pnid:9GkKl7tmPsON8IirYO7FGW-->134</div><div data-page-node-id="W0FqW54qfykA1COSHzWKbl" class="lv lock"><!--pnid:SyBqdn2r33SEQ23PIiNacQ-->135</div><div data-page-node-id="tnvIbb35kj5PhoGgONHVjX" class="lv lock"><!--pnid:uagYAe08FtlxLgBT5Pyk8P-->136</div><div data-page-node-id="6klc8OJZn4kds90Lg2O4or" class="lv lock"><!--pnid:y8CS1pdqJCUr3bJ5k4PHJw-->137</div><div data-page-node-id="2YBXdtJ9ugKGPJ2J1qbtOU" class="lv lock"><!--pnid:b4KtgNmsXxiSOy36RjWlXI-->138</div><div data-page-node-id="RyYKKgPDMPk8AunK2Df1xI" class="lv lock"><!--pnid:xVYcDtYADwtrUldl3ehCCw-->139</div><div data-page-node-id="mObC8T340NyGIYJADtj2Rg" class="lv lock"><!--pnid:WO7Lhx87ngynBegtNyzEaL-->140</div><div data-page-node-id="HgBYmCSAsR6P82kyr6XYVA" class="lv lock"><!--pnid:7l4oisyONsAih0zYDwYbtF-->141</div><div data-page-node-id="Br1rFyzI1aoaNAWk18C4Oz" class="lv lock"><!--pnid:SYJylL2MmDdPGWOpvTjonP-->142</div><div data-page-node-id="F9s6GX7Omb7eu5PCzBeWqP" class="lv lock"><!--pnid:nm1pM0dX4EOFr5XG36PUch-->143</div><div data-page-node-id="zs8rkbEWKjNdh6aAb0kgg4" class="lv lock"><!--pnid:yjAUBePGaPC7A93nBtk6u8-->144</div><div data-page-node-id="hrsvmMzwyaXOcJyoqPrgyy" class="lv lock"><!--pnid:rjjmzVGSuNsjYVxnpS2Apv-->145</div><div data-page-node-id="eKw52K0x4SbXLPszd9YIak" class="lv lock"><!--pnid:vDUlQw4I3tTPuNZ1iRKJdf-->146</div><div data-page-node-id="AtYX2hWqrtBUYjaTDJbpMc" class="lv lock"><!--pnid:lfPFgm1Ml5H5r7hNvhyHC7-->147</div><div data-page-node-id="YLHoCyTY7ZOlIEauqUkvR0" class="lv lock"><!--pnid:ZQ5c0kBcm8eZHSBTlmQlkX-->148</div><div data-page-node-id="qsNaX7LpDN9xybMT5VXZ7q" class="lv lock"><!--pnid:99egOa3KUU7eKpIghCKwPX-->149</div><div data-page-node-id="4Cf903LyV6uxzifz6vwvKy" class="lv lock"><!--pnid:MXRIpjqfim9uxngaG3Pzx5-->150</div></div>
+      <div data-page-node-id="DkS6AIS9R1iXD8uM00UghW" class="keys" id="gun-keys"><div data-page-node-id="PljIM3n6guZIfLtzNcFtqB" class="key"><b data-page-node-id="GaMNKbDYRQRZX62hZWX6vW"><!--pnid:AFk1KY5B55bYOI6QjeZ8Ky-->← / → / ↑</b><!--pnid:W3e23vGIkf1YeEiYjDOqTG--> 移动 · 跳跃</div><div data-page-node-id="aSIrVgWvIyhoR6cJKNaDKG" class="key"><b data-page-node-id="4zutIr3FkwGo2pkOGruKLo"><!--pnid:MVI6nxL4SsMo9lgC2qqEGV-->F / J / Q</b><!--pnid:ZkvqCsVcUhQRiFD7NW1I9w--> 开火</div><div data-page-node-id="q8MU8EX6q02ZxAQ5UQyplE" class="key"><b data-page-node-id="bNuEfIEhHGq52dk5eks9sq"><!--pnid:VVja4HGvfFk2FWmVUtbbrv-->E / [</b><!--pnid:iq2PHp0YHQ3RsJxb84v7WL--> 切换枪械</div><div data-page-node-id="qgWjfY8Vw5LH3RD6qceReu" class="key"><b data-page-node-id="nBhXFNlxnANd8IikyuAWYS"><!--pnid:n68wtTftUoNgInoBmafZW9-->G / K</b><!--pnid:meCcly63ipQ5a37ebKmGHU--> 使用道具</div></div>
+      <div data-page-node-id="VF6iMJQhrXgCw6NpitgGhN" class="keys" id="gun-arsenal"><div data-page-node-id="fw921aOAknocUkBg4zd55J" class="key"><b data-page-node-id="WgpaxfYVVahg6LuP6wh3vY"><!--pnid:WMya9V29zgoqLXddaKdbQq-->F1</b><!--pnid:PmOq2cqtMzYBWv7WiCmE4R--> 手枪</div><div data-page-node-id="DbYmgbC0XU91oeROxh217b" class="key off"><b data-page-node-id="DsORRGUVkVJVmPS2KphmDl"><!--pnid:bAxmQIp9Q3zdCSxtK754nt-->F2</b><!--pnid:SMfiuF1zATasncgHXkX1Oo--> 冲锋枪 · 第 10 关解锁</div><div data-page-node-id="aMY738sAROKypFMECHV32P" class="key off"><b data-page-node-id="PqVLU7Mk0snypc8DVuVuVf"><!--pnid:mEnEMq5jpvAyHfdOQbSw8R-->F3</b><!--pnid:XRmp7xRSUp9K6mTT7UHi7v--> 狙击枪 · 第 20 关解锁</div><div data-page-node-id="Lzo4WgOvqgZHMvwRHKLi9y" class="key off"><b data-page-node-id="PWKByIvzTGNBDDELkl4N12"><!--pnid:QVoxvQ3sG3z1gGgJi2aS6j-->F4</b><!--pnid:KXcOFOSA2KzJVrqJLA1vzn--> 火箭筒 · 第 40 关解锁</div><div data-page-node-id="uEvVe5uerOFvHu0mFSAYC2" class="key off"><b data-page-node-id="h1OKsLCiS45WnwyPdH3ge7"><!--pnid:6tALCLdg54l8Q2HsrMtbxf-->F5</b><!--pnid:ougBWbJ8LM1IAkP9Hgt2VW--> 四联火箭筒 · 第 80 关解锁</div><div data-page-node-id="386fsmfHh2L4B61jSyTUue" class="key off"><b data-page-node-id="pEyH5MwDlNYP0cFpSgE0T8"><!--pnid:cPnakJDV8qx4d1DTfnn4X9-->F6</b><!--pnid:58tF1mjdx0AyKzqPbjRT3F--> 侦查无人机 · 第 100 关解锁（无人机视角）</div><div data-page-node-id="nuqg9k75282Qq09VxGs6ox" class="key off"><b data-page-node-id="VBtnnHtj6tAxW6DAz3kaqX"><!--pnid:lVppOSzFDJ55FaJMydTBQj-->F7</b><!--pnid:Ak8bTiqvAWDy6qgsC5b4lG--> 自爆无人机 · 第 120 关解锁（手动遥控引爆）</div><div data-page-node-id="TlBl71HxqbGwA6j53YAwyB" class="key off"><b data-page-node-id="clYHhG15fONnEBFGnP6PiH"><!--pnid:JCVoxaZITiLSBK8q5fEX0q-->F8</b><!--pnid:6OqBI01sjNMEsITbTAWcY8--> 追踪无人机 · 第 130 关解锁（自动追踪引爆）</div><div data-page-node-id="aUYOQ41YXecJzIhN9PojjQ" class="key"><b data-page-node-id="EJ2EQD9DB4x17IRluzL80y"><!--pnid:1GfoZH3KEnzF5E7Niux0Tl-->F9</b><!--pnid:XHTwmFrIzBlhgFmXEmRGw8--> 手雷</div><div data-page-node-id="0I3FAvj8tHJ1SGDXHSTVQv" class="key"><b data-page-node-id="cvwUqbF0dVoneAjAa4iz17"><!--pnid:LDxha8tFzORMNZ76ZO6fUK-->F10</b><!--pnid:4CoDAggWZU1vQFQARvGfcb--> 医药包</div></div>
+      <div data-page-node-id="xWz73nyfgrBAWHB6oKZVV6" class="unlock">
+        <button data-page-node-id="Zz62KbMkxFQ81JP0SnGEkz" class="sm" data-i18n="gun.unlock" id="btn-gun-unlock-all"><!--pnid:ugUx4BqHLqGD5lFLKs9XCP-->枪械解锁</button>
+        <div data-page-node-id="KCNJLOlg9NwJZeVLPfCk9W" class="unlock-form hidden" id="gun-unlock-form">
+          <input data-page-node-id="JKRComrSudRsapYB0ygJM5" autocomplete="off" data-i18n-ph="gun.pwPlaceholder" id="gun-unlock-pw" maxlength="32" placeholder="密码" type="password">
+          <button data-page-node-id="GXdd9670k2AdvW7eKf3pIQ" class="primary sm" data-i18n="select.confirm" id="btn-gun-unlock-ok"><!--pnid:okSPJOrYzwLjhJXyVNJxZx-->确认</button>
+          <button data-page-node-id="zdnLBWNYk4XEPXr9HRaIkF" class="sm" data-i18n="select.cancel" id="btn-gun-unlock-cancel"><!--pnid:0srDrVnoED5pYTV0zKqbyx-->取消</button>
+        </div>
+        <div data-page-node-id="uDE4vFGMQsuUUyFfZZKuyX" class="set-tip" id="gun-unlock-msg" style="color:#ffd23f"></div>
+      </div>
+      <div data-page-node-id="TPwKmZZLpaYpXdSfM4QpdQ" class="row">
+        <button data-page-node-id="s9eGDCipmGuknQd4BOuFl2" class="primary" data-i18n="gun.campaign" id="btn-gun-campaign"><!--pnid:h6PVpOGHqsGoshzMQ0lHnd-->枪战关卡</button>
+        <button data-page-node-id="1fLymr0DZHXzy65Heseax3" data-i18n="gun.endless" id="btn-gun-endless"><!--pnid:Ly3BZsueteY4n0xDkbOxcQ-->枪战无尽</button>
+        <button data-page-node-id="GEZvinq192JUrZgdNccX7I" data-i18n="gun.duel" id="btn-gun-duel"><!--pnid:YJMQmLJ5pb1uEBwUkhXKJu-->双人对枪</button>
+        <button data-page-node-id="Ip9vOHZAHxdnBeZhJzV4Nh" data-i18n="gun.training" id="btn-gun-training"><!--pnid:fqAbYUUw7PMqLFWdLgBRjf-->枪战训练场</button>
+        <button data-page-node-id="rjM3NgxfqBHcfZ8bZzXqb8" data-i18n="gun.home" id="btn-gun-home"><!--pnid:g9qveYUSeCnD9W0F9hUSpL-->返回主页</button>
+      </div>
+    </div>
+
+    <!--pnid:h1ouuXNFsWNDSh2SLIR1CN--><!-- 双人对枪：本场结算 -->
+    <div data-page-node-id="P6reuxy9KpnOwWlnuVGTpm" class="overlay hidden" id="ov-duel-over">
+      <h2 data-page-node-id="4wVGaipLRtnXKGlwzQd1bE" id="duel-title"></h2>
+      <div data-page-node-id="QlxE9XSlQIqclFLuZ7cfFh" class="stat-line" id="duel-stat"></div>
+      <p data-page-node-id="oV0phEzorroLgB0Jd1Ia5c" id="duel-tip"></p>
+      <div data-page-node-id="IiJgXCiIZvy6NCDsCFTQ3h" class="row">
+        <button data-page-node-id="373YbCsOwoUyOCR5MtONem" class="primary" data-i18n="gun.again" id="btn-duel-again"><!--pnid:7JGFPWfAxCqNM56DwvSvWL-->再来一场</button>
+        <button data-page-node-id="9fGDcVXKTwQUhjeg3swsTu" data-i18n="gun.home" id="btn-duel-home"><!--pnid:ySqJK5elAi4Xvln0peU0Y8-->返回主页</button>
+      </div>
+    </div>
+
+    <!--pnid:syfbZauQURJd3KHenOumes--><!-- 操作设置 -->
+    <div data-page-node-id="Z2IR7gt8wUQRJUuRSu8Cdu" class="overlay hidden" id="ov-settings">
+      <h2 data-page-node-id="6GasjgZ85AodT9gvd2EIcf" data-i18n="settings.title"><!--pnid:L7CoBxptAjhqxAoNfDL8Hz-->操作设置</h2>
+      <div data-page-node-id="y0pYYbRTMIBHUOvSETg1Uk" class="set-body" id="set-body"></div>
+      <p data-page-node-id="KK0rrI2Z3hCMGsDeQdxLYh" class="set-tip" data-i18n="settings.moreHint" id="set-scroll-tip" style="color:#ffd23f"><!--pnid:LuBrW2XCxoClCIoMQ34OeG-->↓ 面板内向下滚动：还有「音乐 / 音效」和「语言」设置</p>
+      <div data-page-node-id="c2CdN4lzsjyhrBmOQHUmul" class="row">
+        <button data-page-node-id="INIIlv1tM0BWEAadthr32n" class="primary" data-i18n="settings.back" id="btn-settings-close"><!--pnid:8hBmqy7kF6sWRIydGI7E6N-->返回主页</button>
+        <button data-page-node-id="dhYdWvLBKYQiQYAkY8Q2RF" data-i18n="settings.reset" id="btn-settings-reset"><!--pnid:fNzBsLwis9p6bNCS1hnS3L-->恢复默认</button>
+      </div>
+    </div>
+
+    <!--pnid:ZXfxdBlRILIkAA0HHwyze6--><!-- 暂停 -->
+    <div data-page-node-id="cKPLaJudQgaA4VeJLqYcUJ" class="overlay hidden" id="ov-pause">
+      <h2 data-page-node-id="846X5dx3pSJJbR8c1v9Cjk" data-i18n="pause.title"><!--pnid:XGoLKlfNlsrAQqHT6XOFlU-->已暂停</h2>
+      <p data-page-node-id="VE5jLDJ8YWSks2v9AKR09I" data-i18n="pause.tip" id="pause-tip"><!--pnid:F6gCtCgLrwqm5MqOxHsPML-->慢慢来，反正你还会死很多次。</p>
+      <div data-page-node-id="EVlUgqp7zLPN1aldhRD04L" class="row">
+        <button data-page-node-id="PJM4dmynVTOAJaXOTxn0J7" class="primary" data-i18n="pause.resume" id="btn-resume"><!--pnid:nmzVYOMmXnvCTenpuKXb1d-->继续</button>
+        <button data-page-node-id="a11XqS2mNOfi4jZ4KkcvV70" data-i18n="pause.settings" id="btn-pause-settings"><!--pnid:YhT8vQoJz3Cx2Nk6Wv0lP9-->操作设置</button>
+        <button data-page-node-id="a11XqS2mNOfi4jZ4KkcvV71" class="hidden" id="btn-admin" data-i18n="pause.admin"><!--pnid:YhT8vQoJz3Cx2Nk6Wv0lPA-->用户管理</button>
+        <button data-page-node-id="JXiFdvC5l0qJc8p3VLFxWv" data-i18n="pause.restart" id="btn-pause-restart"><!--pnid:6yB2A1cX33a7FLR92cYLSY-->重开本关</button>
+        <button data-page-node-id="Hn4XTD9rvxUuIU4Nxy4orG" data-i18n="pause.select" id="btn-pause-select"><!--pnid:7lx2GiweImOjUyGOziFwFZ-->关卡选择</button>
+        <button data-page-node-id="Vo0SeqliMSgVk6xWoe470Q" data-i18n="pause.home" id="btn-pause-home"><!--pnid:FPy3Wf2ZiOfdiHlz4OLegt-->主页</button>
+      </div>
+    </div>
+
+    <!--pnid:d17klQ304szyj7u5ZT1hLW--><!-- 通关 -->
+    <div data-page-node-id="CadhnW9zfYy1Q15zuWmdKE" class="overlay hidden" id="ov-win">
+      <h2 data-page-node-id="sXyFfdzU99sq9p0z6ZC4Aj" id="win-title"></h2>
+      <div data-page-node-id="8wJDskFKW9TNbGGFnRfbMB" class="stat-line" id="win-stat"></div>
+      <p data-page-node-id="ozOmD6pVcAjN2rrLiKrS7L" id="win-tip"></p>
+      <p data-page-node-id="BOcLNEsgOSUcFn9jMlDFHA" class="set-tip" data-i18n="win.spaceTip" id="win-space-tip" style="color:#ffd23f"><!--pnid:MIpDMtII1dlRxOPyKx8FRq-->按「空格 / 回车」也可以进入下一关</p>
+      <div data-page-node-id="L4czeu34gLbqZAqaZhQIhv" class="row">
+        <button data-page-node-id="WQLMCMoeY9YEB6PASvDAhY" class="primary" data-i18n="win.next" id="btn-next"><!--pnid:2XaW4T3N3COulDIvJuVBNq-->下一关</button>
+        <button data-page-node-id="bBVAlrThmwzNrRiNI0V6pq" data-i18n="win.replay" id="btn-win-restart"><!--pnid:5cCKZ4zjHNMKZApqPujLA1-->再玩一次</button>
+        <button data-page-node-id="mbERvnfJFr5v7R8vA3Fm3y" data-i18n="pause.home" id="btn-win-home"><!--pnid:ZTOlzuRNwnff13qstXpWPl-->主页</button>
+      </div>
+    </div>
+
+    <!--pnid:idEYIT5j5LZv2QClk8hLc8--><!-- 双人模式：时间到（判负） -->
+    <div data-page-node-id="ksmJxqOA7PGtHbIK2bbCT5" class="overlay hidden" id="ov-fail">
+      <h2 data-page-node-id="4HZty8R0bmAudfttxunnmf" id="fail-title"></h2>
+      <div data-page-node-id="kz0qS947GviR5sUvScPxtq" class="stat-line" id="fail-stat"></div>
+      <p data-page-node-id="hAel9rTWPv8tr85p7vWGrp" id="fail-tip"></p>
+      <div data-page-node-id="ZnpXZ6AvdYdRXLAGnm15iH" class="row">
+        <button data-page-node-id="xSkqzpQhIN8GFco2Rtficj" class="primary" data-i18n="coop.retry" id="btn-fail-retry"><!--pnid:K3qi7JhpA2XvKP0j99alKp-->重新挑战</button>
+        <button data-page-node-id="fJRwpw2swHg6XbPlfbJEQw" data-i18n="pause.home" id="btn-fail-home"><!--pnid:u6uXBsoeHtepYT2hmmzjdP-->主页</button>
+      </div>
+    </div>
+  </main>
+
+  <footer data-page-node-id="Tg7slaM3OPkO705dGiVGRQ" id="footer-tip">
+    <div class="foot-copy">© 本项目由个人开发者「靠北科技」运营（非商业团队）</div>
+    <div class="foot-sub">2026 · 靠北 Chat</div>
+
+    <!-- 产品信息 · 下载客户端：现在只有 Android 版，iOS / Windows 开发中 -->
+    <div class="foot-dl">
+      <div class="dl-title">⬇️ 下载「谁才是赢家」客户端</div>
+      <div class="dl-row">
+        <a class="dl-card dl-ok" href="apk/kaobei-winner-v1.4.apk" download="谁才是赢家-v1.4.apk" title="点击直接下载 Android 版安装包（APK）">
+          <span class="dl-ico">🤖</span>
+          <span class="dl-name">Android 版</span>
+          <span class="dl-ver">v1.4 · APK 安装包</span>
+          <span class="dl-btn">立即下载</span>
+        </a>
+        <div class="dl-card dl-soon" title="iOS 版正在开发中">
+          <span class="dl-ico">🍎</span>
+          <span class="dl-name">iOS 版</span>
+          <span class="dl-badge">开发中</span>
+        </div>
+        <div class="dl-card dl-soon" title="Windows 版正在开发中">
+          <span class="dl-ico">🪟</span>
+          <span class="dl-name">Windows 版</span>
+          <span class="dl-badge">开发中</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script data-page-node-id="nsIZDLsN9C2MtMP69CHEAo" src="js/util.js"></script>
+<script data-page-node-id="EwAbRB1tm6CYgvQUBEWH0F" src="js/i18n.js"></script>
+<script data-page-node-id="Fd2vDCPCXtNDDIlmvqLi4h" src="js/settings.js"></script>
+<script data-page-node-id="3PZyExRmT8w6ghbGWRBYg2" src="js/music.js"></script>
+<script data-page-node-id="cSMSxPnoY5KA7oDLOPtFyO" src="js/guns.js"></script>
+<script data-page-node-id="EuKaiY1R6ETXmV70EYelam" src="js/gen.js"></script>
+<script data-page-node-id="x9fbaHbDCrzgVjVMc09fee" src="js/room.js"></script>
+<script data-page-node-id="NeTw7xQ2mKp9Lv4Rr6Ss8T" src="js/net.js"></script>
+<script src="js/secret.js"></script>
+<script src="js/skins.js"></script>
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="js/netroom.js"></script>
+<script src="js/mobile.js"></script>
+<script data-page-node-id="sDiDgr1vAD1U2I2vZx9avK" src="js/gunroom.js"></script>
+<script data-page-node-id="6DNWwqj48As06GbepY0tXn" src="js/gunai.js"></script>
+<script data-page-node-id="R5ljRlYYgcnwnPpQ5NneLk" src="js/levels.js"></script>
+<script data-page-node-id="fO6Y2r2txOuwyYmG3BlMSK" src="js/world.js"></script>
+<script data-page-node-id="daby9Tk4uxwKDzjXQLiE6N" src="js/player.js"></script>
+<script data-page-node-id="WGPeJNz4KOvOSW3A5XbVTm" src="js/render.js"></script>
+<script src="js/roomplay.js"></script>
+<script data-page-node-id="maRqZk2bbzXyJPc8Dk82QQ" src="js/game.js"></script>
+<script src="js/cloud.js"></script>
+
+
+
+
+</body></html>
